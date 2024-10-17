@@ -9,6 +9,8 @@ public class EventManagementSystemMain {
 
     public static void main(String[] args) {
         
-        new evsWelcomePageGUI();
+  new evsWelcomePageGUI();
+    
+     
     }
 }

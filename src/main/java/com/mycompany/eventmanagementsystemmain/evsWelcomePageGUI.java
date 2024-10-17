@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public class evsWelcomePageGUI extends JFrame implements ActionListener{
     
-    JButton btnBday,btnWedding,btnChristening,btnTap,btnOpenAdmin;
+    JButton btnBday,btnWed,btnChris,btnTap,btnOpenAdmin;
     JLabel lblBdayImage,lblWedImageFinal,lblChristeningImageFinal,lblTagline,lblHeader;
     JPanel pnlBdayImage,pnlWeddingImage,pnlChristeningImage,pnlHeader;
     evsWelcomePageGUI(){
@@ -34,25 +34,25 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
         add(btnBday);
         btnBday.addActionListener(this);
         
-        btnWedding=new JButton("Wedding");
-        btnWedding.setBounds(400, 20, 200, 50);
-        btnWedding.setFont(new Font("Arial",Font.BOLD,20));
-        btnWedding.setForeground(new Color(97, 3, 154));
-        btnWedding.setBorderPainted(false);
-        btnWedding.setContentAreaFilled(false);
-        btnWedding.setFocusPainted(false);
-        add(btnWedding);
-        btnWedding.addActionListener(this);
+        btnWed=new JButton("Wedding");
+        btnWed.setBounds(400, 20, 200, 50);
+        btnWed.setFont(new Font("Arial",Font.BOLD,20));
+        btnWed.setForeground(new Color(97, 3, 154));
+        btnWed.setBorderPainted(false);
+        btnWed.setContentAreaFilled(false);
+        btnWed.setFocusPainted(false);
+        add(btnWed);
+        btnWed.addActionListener(this);
         
-        btnChristening=new JButton("Christening");
-        btnChristening.setBounds(700, 20, 200, 50);
-        btnChristening.setFont(new Font("Arial",Font.BOLD,20));
-        btnChristening.setForeground(new Color(97, 3, 154));
-        btnChristening.setBorderPainted(false);
-        btnChristening.setContentAreaFilled(false);
-        btnChristening.setFocusPainted(false);
-        add(btnChristening);
-        btnChristening.addActionListener(this);
+        btnChris=new JButton("Christening");
+        btnChris.setBounds(700, 20, 200, 50);
+        btnChris.setFont(new Font("Arial",Font.BOLD,20));
+        btnChris.setForeground(new Color(97, 3, 154));
+        btnChris.setBorderPainted(false);
+        btnChris.setContentAreaFilled(false);
+        btnChris.setFocusPainted(false);
+        add(btnChris);
+        btnChris.addActionListener(this);
         
         ImageIcon i1 = new ImageIcon("images/birthD.jpg");
         Image i2 = i1.getImage().getScaledInstance(240, 300, Image.SCALE_REPLICATE);
@@ -110,7 +110,7 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
         btnTap.setContentAreaFilled(false);
         btnTap.setFocusPainted(false);
         add(btnTap);
-        btnChristening.addActionListener(this);
+        btnTap.addActionListener(this);
       
         
         btnOpenAdmin=new JButton("Admin Log-in");
@@ -121,6 +121,7 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
         btnOpenAdmin.setContentAreaFilled(false);
         btnOpenAdmin.setFocusPainted(false);
         add(btnOpenAdmin);
+        btnOpenAdmin.addActionListener(this);
 
         pnlHeader=new JPanel();
         pnlHeader.setBounds(0, 0, 1000, 80);
@@ -132,11 +133,32 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
     }
     public void actionPerformed(ActionEvent e) { 
    if(e.getSource()==btnBday){
-         new TryFrame();
-         dispose();    
-        }}
-     
-
+    this.dispose();
+     new userPageDisplay();
+     }else if(e.getSource()==btnWed){
+        this.dispose();
+     new userPageDisplay();
+     } else if(e.getSource()==btnChris){
+       this.dispose();
+     new userPageDisplay();
+     }else if(e.getSource()==btnChris){
+        this.dispose();
+     new userPageDisplay();
+     }else if(e.getSource()==btnChris){
+        this.dispose();
+     new userPageDisplay();
+     }else if(e.getSource()==btnTap){
+        this.dispose();
+     new userPageDisplay();
+     }else if(e.getSource()==btnOpenAdmin){
+        this.dispose();
+       new adminLogin();
+        dispose();
+       
+        }
+  
+        
+    }
+    
    
     }
-
