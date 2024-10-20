@@ -13,7 +13,7 @@ public class adminLogin  extends JFrame{
     private JTextField userField;
     private JPasswordField pwField;
     private JButton logButton;
-    private JPanel panelWholeBg, panelHeadLine, colorLight, colorMild, colorDark, framePanel;
+    private JPanel panelWholeBg, panelHeadLine, colorLight, colorMild, colorDark;
     
     
     
@@ -83,15 +83,15 @@ public class adminLogin  extends JFrame{
             }
         });
         
-        framePanel.add(label);
-        framePanel.add(panelHeadLine);
-        framePanel.add(userLabel);
-        framePanel.add(userField);
-        framePanel.add(pwLabel);
-        framePanel.add(pwField);
-        framePanel.add(logButton);
+        panelWholeBg.add(label);
+        panelWholeBg.add(panelHeadLine);
+        panelWholeBg.add(userLabel);
+        panelWholeBg.add(userField);
+        panelWholeBg.add(pwLabel);
+        panelWholeBg.add(pwField);
+        panelWholeBg.add(logButton);
     
-        add(framePanel);
+        add(panelWholeBg);
         
         setVisible(true);
     }
