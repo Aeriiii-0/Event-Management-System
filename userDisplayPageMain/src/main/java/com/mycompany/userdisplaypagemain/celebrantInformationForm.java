@@ -15,11 +15,12 @@ import java.awt.event.ActionListener;
 
 public class celebrantInformationForm extends JFrame implements ActionListener {
     
-  JLabel lblName, lblAttendees, lblDate, lblHeader;
+  JLabel lblName, lblAttendees, lblDate, lblHeader, lblEvent, lblDuration;
   JPanel pnlInfoForm;
-  JTextField txtName, txtDate;
+  JTextField txtName, txtDate, txtDuration, txtEvent;
   JButton btnRequest;
-  JComboBox cmbAttendeeReq;
+  JComboBox cmbAttendeeReq, cmbDuration;
+  String[] eventDuration;
     
   celebrantInformationForm(){
     
@@ -43,11 +44,11 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
     lblName = new JLabel("Name: ");
     lblName.setFont(new Font("Serif",Font.BOLD,25));
     lblName.setForeground(Color.BLACK);
-    lblName.setBounds(160, 100 , 150, 160);
+    lblName.setBounds(220, 60 , 150, 160);
     add(lblName);
     
     txtName = new JTextField(50);
-    txtName.setBounds(400, 150, 520, 50);
+    txtName.setBounds(400, 120, 520, 50);
     txtName.setBorder(null);
     txtName.setBackground(new Color(	209, 159, 232));
     txtName.setForeground(Color.BLACK);
@@ -58,36 +59,64 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
     lblAttendees = new JLabel("Attendees: ");
     lblAttendees.setFont(new Font("Serif",Font.BOLD,25));
     lblAttendees.setForeground(Color.BLACK);
-    lblAttendees.setBounds(120,200, 200, 160);
+    lblAttendees.setBounds(180,160, 200, 160);
     add(lblAttendees);
     
     String[] attendeesOptions = {"Select an option", "20 persons", "35 persons", "50persons"}; 
     cmbAttendeeReq = new JComboBox<>(attendeesOptions);  
     cmbAttendeeReq.setBorder(null);
-    cmbAttendeeReq.setBounds(400, 250, 520, 50);  
+    cmbAttendeeReq.setBounds(400, 220, 520, 50);  
     cmbAttendeeReq.setBackground(new Color(	209, 159, 232));
     cmbAttendeeReq.setFont(new Font("Serif",Font.BOLD,15));
-
     add(cmbAttendeeReq);
     
  
-    lblDate = new JLabel ("Date: ");
+    lblDate = new JLabel ("Date (dd/mm/yyyy): ");
     lblDate.setFont(new Font("Serif",Font.BOLD,25));
     lblDate.setForeground(Color.BLACK);
-    lblDate.setBounds(168, 300, 150, 160);
+    lblDate.setBounds(80, 280, 230, 160);
     add(lblDate);
   
     txtDate = new JTextField(50);
     txtDate.setBorder(null);
-    txtDate.setBounds(400, 360, 520, 50);
+    txtDate.setBounds(400, 330, 520, 50);
     txtDate.setBackground(new Color(	209, 159, 232));
     txtDate.setForeground(Color.BLACK);
     txtDate.setFont(new Font("Serif",Font.BOLD,15));
     txtDate.setText("");
     add(txtDate);
     
+    lblDuration = new JLabel("Time Duration ");
+    lblDuration.setFont(new Font("Serif",Font.BOLD,18));
+    lblDuration.setForeground(Color.BLACK);
+    lblDuration.setBounds(185, 460 , 200, 100);
+    add(lblDuration);
+    
+    String [] eventDuration = {"Select Option", "2 hours", "3 hours and half hours" , "5 hours"}; 
+    cmbDuration = new JComboBox<>(eventDuration);  
+    cmbDuration.setBorder(null);
+    cmbDuration.setBounds(140, 450, 230, 40);  
+    cmbDuration.setBackground(new Color(	209, 159, 232));
+    cmbDuration.setFont(new Font("Serif",Font.BOLD,20));
+    add(cmbDuration);
+    
+    lblEvent = new JLabel("Time of Event   ");
+    lblEvent.setFont(new Font("Serif",Font.BOLD,18));
+    lblEvent.setForeground(Color.BLACK);
+    lblEvent.setBounds(620, 460 , 200, 100);
+    add(lblEvent);
+    
+    txtEvent = new JTextField(50);
+    txtEvent.setBorder(null);
+    txtEvent.setBounds(580, 450, 230, 40);
+    txtEvent.setBackground(new Color(	209, 159, 232));
+    txtEvent.setForeground(Color.BLACK);
+    txtEvent.setFont(new Font("Serif",Font.BOLD,15));
+    txtEvent.setText("");
+    add(txtEvent);
+    
     btnRequest = new JButton("REQUEST SCHEDULE");
-    btnRequest.setBounds(550, 470, 220, 60); 
+    btnRequest.setBounds(360, 590, 220, 60); 
     btnRequest.setFont(new Font("Serif",Font.BOLD,15));
     btnRequest.setBackground(new Color(190, 140, 229));
     add(btnRequest);

@@ -96,8 +96,8 @@ public class userPageDisplay extends JFrame implements ActionListener{
         setVisible(true);
 }      @Override
        public void actionPerformed(ActionEvent e){
-             if(e.getSource() == btnBirthday){
-             this.dispose();
+            if(e.getSource() == btnBirthday){
+            this.dispose();
             new celebrantInformationForm();
             
             dispose();
@@ -117,4 +117,5 @@ public class userPageDisplay extends JFrame implements ActionListener{
        }
              }
                
+
 
