@@ -37,9 +37,11 @@ public class adminLogin  extends JFrame{
         panelWholeBg.setBackground(colorLight);
         panelWholeBg.setBounds(0, 0, 1000, 800);
         
+        
         panelHeadLine = new JPanel( null);
         panelHeadLine.setBackground(colorMild);
         panelHeadLine.setBounds(0,0,1000,170);
+        panelWholeBg.add(panelHeadLine);
 
         label = new JLabel("Admin: Log In",SwingConstants.CENTER);
         label.setForeground(Color.white);
@@ -51,23 +53,27 @@ public class adminLogin  extends JFrame{
         userLabel.setBounds(200, 300, 250, 30);
         userLabel.setFont(new Font("Arial",Font.BOLD,30));
         userLabel.setForeground(Color.WHITE);
+        panelWholeBg.add(userLabel);
         
         userField = new JTextField();
         userField.setBackground(colorMild);
         userField.setBounds(500, 290, 250,50);
         userField.setFont(new Font("Arial",Font.BOLD,30));
         userField.setForeground(Color.WHITE);
+        panelWholeBg.add(userField);
         
         pwLabel = new JLabel ("Password:");
         pwLabel.setBounds(200,400,250,30);
         pwLabel.setFont(new Font("Arial",Font.BOLD,30));
         pwLabel.setForeground(Color.WHITE);
+        panelWholeBg.add(pwLabel);
         
         pwField = new JPasswordField();
         pwField.setBackground(colorMild);
         pwField.setBounds(500, 390,250,50);
         pwField.setFont(new Font("Arial",Font.BOLD,30));
         pwField.setForeground(Color.WHITE);
+        panelWholeBg.add(pwField);
         
         logButton = new JButton("Log in");
         logButton.setBounds(400,550, 210, 60);
@@ -119,13 +125,6 @@ public class adminLogin  extends JFrame{
         }
     }
 });
-
-        
-        panelWholeBg.add(panelHeadLine);
-        panelWholeBg.add(userLabel);
-        panelWholeBg.add(userField);
-        panelWholeBg.add(pwLabel);
-        panelWholeBg.add(pwField);
         panelWholeBg.add(logButton);
     
         add(panelWholeBg);
