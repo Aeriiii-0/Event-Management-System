@@ -1,10 +1,15 @@
-
+    
 package com.mycompany.adminloginmain;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.*;
 
 public class adminLogin  extends JFrame{
@@ -71,18 +76,49 @@ public class adminLogin  extends JFrame{
         
         logButton.addActionListener(new ActionListener () {
             public void actionPerformed (ActionEvent e) {
+                
                 String username = userField.getText();
-                char [] password = pwField.getPassword();
+                String password = new String(pwField.getPassword());
                 
-                if (username.length() > 0 && password.length > 0) {
-                    JOptionPane.showMessageDialog(null,"Login Successful","Success", JOptionPane.INFORMATION_MESSAGE);
+                 try {
+                     Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/users", "root", "elweng098*");
+
+            PreparedStatement checkStmt = connection.prepareStatement("SELECT * FROM student WHERE username = ?");
+            checkStmt.setString(1, username);
+            ResultSet rs = checkStmt.executeQuery();
+
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(logButton, "Username already exists. Please choose a different username.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO student (username, password) VALUES (?, ?)");
+                insertStmt.setString(1, username);
+                insertStmt.setString(2, password);
+
+                int rowsInserted = insertStmt.executeUpdate();
+                if (rowsInserted > 0) {
+                    JOptionPane.showMessageDialog(logButton, "You have successfully registered in Mysql Database!\n\n\n" + "Entered Username: " + username + "\nEntered Password: " + password + "\n\n\n", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please Enter Valid Accounts", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(logButton, "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                
+
+                insertStmt.close();
             }
-        });
-        
+            
+            rs.close();
+            checkStmt.close();
+            connection.close();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+            JOptionPane.showMessageDialog(logButton, "Database Error: " + sqlException.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ClassNotFoundException cnfException) {
+            cnfException.printStackTrace();
+            JOptionPane.showMessageDialog(logButton, "MySQL Driver Not Found: " + cnfException.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+});
+
         panelWholeBg.add(label);
         panelWholeBg.add(panelHeadLine);
         panelWholeBg.add(userLabel);
