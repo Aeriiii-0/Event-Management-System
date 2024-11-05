@@ -12,9 +12,9 @@ package com.mycompany.adminloginmain;
 public class AdminLoginMain {
 
     public static void main(String[] args) {
-        adminLogin admin = new adminLogin();
+        adminLogin adminLogin = new adminLogin();
 
         
-        admin.setVisible(true);  
+        adminLogin.setVisible(true);  
     }
 }

@@ -1,6 +1,7 @@
     
 package com.mycompany.adminloginmain;
 
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -10,7 +11,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.*;
 
 public class adminLogin  extends JFrame{
         
