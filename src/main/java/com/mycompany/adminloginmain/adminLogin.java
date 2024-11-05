@@ -19,8 +19,6 @@ public class adminLogin  extends JFrame{
     private JButton logButton;
     private JPanel panelWholeBg, panelHeadLine, colorLight, colorMild, colorDark;
     
-    
-    
     adminLogin(){
         setTitle ("Home Page");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -128,5 +126,4 @@ public class adminLogin  extends JFrame{
         
         setVisible(true);
     }
-    
 }
