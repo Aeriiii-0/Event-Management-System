@@ -37,7 +37,7 @@ public class adminLogin  extends JFrame{
         panelWholeBg.setBackground(colorLight);
         panelWholeBg.setBounds(0, 0, 1000, 800);
         
-        panelHeadLine = new JPanel (null);
+        panelHeadLine = new JPanel( null);
         panelHeadLine.setBackground(colorMild);
         panelHeadLine.setBounds(0,0,1000,170);
 
@@ -45,6 +45,7 @@ public class adminLogin  extends JFrame{
         label.setForeground(Color.white);
         label.setFont(new Font("Arial",Font.BOLD,60));
         label.setBounds(0,50,1000,80);
+        panelWholeBg.add(label);
         
         userLabel = new JLabel("Username:");
         userLabel.setBounds(200, 300, 250, 30);
@@ -119,7 +120,7 @@ public class adminLogin  extends JFrame{
     }
 });
 
-        panelWholeBg.add(label);
+        
         panelWholeBg.add(panelHeadLine);
         panelWholeBg.add(userLabel);
         panelWholeBg.add(userField);
