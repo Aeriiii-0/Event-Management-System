@@ -96,6 +96,7 @@ public class adminLogin  extends JFrame{
                 int rowsInserted = insertStmt.executeUpdate();
                 if (rowsInserted > 0) {
                     JOptionPane.showMessageDialog(logButton, "You have successfully registered in Mysql Database!\n\n\n" + "Entered Username: " + username + "\nEntered Password: " + password + "\n\n\n", "Success", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
                 } else {
                     JOptionPane.showMessageDialog(logButton, "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -106,6 +107,7 @@ public class adminLogin  extends JFrame{
             rs.close();
             checkStmt.close();
             connection.close();
+            
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
             JOptionPane.showMessageDialog(logButton, "Database Error: " + sqlException.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
