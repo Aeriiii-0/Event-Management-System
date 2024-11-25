@@ -14,13 +14,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.text.*;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,10 +27,11 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
     JComboBox cmbDuration;
     String inputEventId, inputDate, inputName, inputAttendees,inputTimeDuration,inputTimeOfEvent;
     String [] eventDuration = {"Select Option", "2 hours", "3 hours and half hours" , "5 hours"}; 
+    
     adminAddEventFinal(){
         this.setSize(1000, 800);
         this.setTitle("Event Venture");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         getContentPane().setBackground(new Color(213, 182, 238));
         this.setLocationRelativeTo(null);
@@ -199,16 +193,14 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
             }
         }else if(e.getSource()==btnUpdateDataBase){
             updateDatabase();
-        }else{
-            this.dispose();
-            new adminFrameGeneral();
-        }    
+        }  
     }
+    
     private void updateDatabase() {
         
     }
 
-   private Queue<EventRequest> eventQueue = new PriorityQueue<>(Comparator.comparing(EventRequest::getDate));
+  
 
     private void addEventToDatabase() throws SQLException {
         inputEventId = tfEventName.getText();
@@ -234,74 +226,11 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
             JOptionPane.showMessageDialog(null, "Event Added");
             txaNotif.setText("Succefully added.");
         }
+         catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Input Error: " + e.getMessage());
+        }
+}
 
            
-            EventRequest eventRequest = new EventRequest(inputEventId, inputName, inputDate, Integer.parseInt(inputAttendees), Double.parseDouble(inputTimeDuration), inputTimeOfEvent);
-            eventQueue.add(eventRequest);
-
-       
-            Date eventDateTime = parseEventDateTime();
-            long reminderTime = eventDateTime.getTime() - 86400000; 
-
-            Timer newTimer = new Timer();
-            newTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    JOptionPane.showMessageDialog(null, "Reminder: It's your special day today!");
-                    newTimer.cancel();
-                }
-            }, new Date(reminderTime));
-
-            JOptionPane.showMessageDialog(null, "Event added and reminder set for " + new SimpleDateFormat("dd/MM/yyyy").format(new Date(reminderTime)));
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Imput Error: " + e.getMessage());
-        }
-    }
-
-  
-    private Date parseEventDateTime() {
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            return format.parse(inputDate + " " + inputTimeOfEvent);
-        } catch (ParseException e) {
-            JOptionPane.showMessageDialog(null, "Invalid date or time format.");
-            return null;
-        }
-    }
-
-    private long parseDuration(String inputTimeDuration) {
-        switch (inputTimeDuration) {
-            case "2 hours": return 7200000;
-            case "3 hours and half hours": return 12600000;
-            case "5 hours": return 18000000;
-            default: return 0;
-        }
-    }
-
-    private class EventRequest {
-        private String eventId;
-        private String name;
-        private String date;
-        private int attendees;
-        private double duration;
-        private String startTime;
-
-        public EventRequest(String eventId, String name, String date, int attendees, double duration, String startTime) {
-            this.eventId = eventId;
-            this.name = name;
-            this.date = date;
-            this.attendees = attendees;
-            this.duration = duration;
-            this.startTime = startTime;
-        }
-
-        public Date getDate() {
-            try {
-                return new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            } catch (ParseException e) {
-                return null;
-            }
-        }
     }
 }
