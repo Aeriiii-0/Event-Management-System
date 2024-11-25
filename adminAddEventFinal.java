@@ -192,14 +192,10 @@ import com.mycompany.adminframegeneral.connector;
             scrollPane.setBounds(30, 40, 350, 340);
             pnlCenter.add(scrollPane);
 
-            btnAddEvent.addActionListener(e -> adminAdd());
-               
+            btnAddEvent.addActionListener(e -> adminAdd());              
             btnBack.addActionListener(this);
-
             gettingTheUserData();
-
-           
-
+            
             add(pnlCenter);
             add(pnlEast);
             add(pnlNorth);
@@ -244,11 +240,8 @@ import com.mycompany.adminframegeneral.connector;
                 new AdminFrameGeneral();
                 
             }
-        }
-        public void tfException(){
             
-
-        }public void adminAdd() {
+        } public void adminAdd() {
             //getting the data from the textfields and the combo box
             String eventName = tfEventName.getText().trim();
             String organizerName = tfName.getText().trim();
@@ -257,21 +250,20 @@ import com.mycompany.adminframegeneral.connector;
             String duration = (String) cmbDuration.getSelectedItem();
             String timeEvent = tfTimeEvent.getText().trim();
 
-    //EXCEPTION 
-    if (eventName.isEmpty() || organizerName.isEmpty() || eventDate.isEmpty() || timeEvent.isEmpty()
+        //EXCEPTION 
+        if (eventName.isEmpty() || organizerName.isEmpty() || eventDate.isEmpty() || timeEvent.isEmpty()
             || attendees.equals("Select Option") || duration.equals("Select Option")) {
-        txaNotif.setText("PLEASE FILL OUT ALL FIELDS");
-        return;
-    }
+            txaNotif.setText("PLEASE FILL OUT ALL FIELDS");
+            return;
+        }
 
     //connection to database
-    try (Connection conn = connector.getCon()) {
+        try (Connection conn = connector.getCon()) {
         if (conn == null) {
             JOptionPane.showMessageDialog(this, "Database connection failed!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Prepare the query to insert the even
         String query = "INSERT INTO adminaddtable (event_name, name, date, attendees, duration, time_of_event) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement insertStmt = conn.prepareStatement(query)) {
             // Set the event data for the query
@@ -281,11 +273,9 @@ import com.mycompany.adminframegeneral.connector;
             insertStmt.setString(4, attendees);
             insertStmt.setString(5, duration);
             insertStmt.setString(6, timeEvent);
-
             
             insertStmt.executeUpdate();
             txaNotif.setText("EVENT ADDED SUCCESSFULLY");
-            JOptionPane.showMessageDialog(this, "Event added successfully!");
 
             //clear all fields and combobox after adding
             tfEventName.setText("");
@@ -296,14 +286,9 @@ import com.mycompany.adminframegeneral.connector;
             tfTimeEvent.setText("");
         }
 
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-        txaNotif.setText("ERROR: " +ex.getMessage());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            txaNotif.setText("ERROR: " +ex.getMessage());
+        }
     }
 }
-
-
-     public static void main (String[] args){
-            new adminAddEventFinal();
-}
-    }
