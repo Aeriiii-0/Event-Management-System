@@ -17,9 +17,9 @@ import javax.swing.*;
 public class adminFrameGeneral extends JFrame implements ActionListener {
     
     JButton btnAdd, btnUpdate, btnDelete, btnSearchEvents;
-    JLabel lblBackgroundImage;
+   
 
-    adminFrameGeneral(){
+        adminFrameGeneral(){
         setSize(1000, 800);
         setTitle("Venue Venture");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,19 +27,6 @@ public class adminFrameGeneral extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setLayout(null);
         
-
-        /*ImageIcon bg = new ImageIcon("image/welcomebg.jpg");
-        Image image = bg.getImage();
-        Image image1 = image.getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
-        bg = new ImageIcon(image1);
-
-        lblBackgroundImage = new JLabel();
-        lblBackgroundImage.setIcon(bg);
-        lblBackgroundImage.setBounds(0, 0, 1000, 800);
-        add(lblBackgroundImage);*/
-        
-       
-
         btnAdd = new JButton("ADD");
         btnAdd.setFont(new Font("Serif", Font.BOLD, 20));
         btnAdd.setBounds(90, 500, 180, 40);
@@ -73,12 +60,9 @@ public class adminFrameGeneral extends JFrame implements ActionListener {
         btnDelete.setOpaque(false);
         btnDelete.setBorderPainted(false);
         btnDelete.setFocusPainted(false);
-        btnDelete.addActionListener(e -> {
-            // Delete event logic
-        });
         add(btnDelete);
+        btnDelete.addActionListener(this);
         
-
         btnSearchEvents = new JButton("SEARCH");
         btnSearchEvents.setFont(new Font("Serif", Font.BOLD, 20));
         btnSearchEvents.setBounds(690, 500, 180, 40);
@@ -88,10 +72,9 @@ public class adminFrameGeneral extends JFrame implements ActionListener {
         btnSearchEvents.setOpaque(false);
         btnSearchEvents.setBorderPainted(false);
         btnSearchEvents.setFocusPainted(false);
-        btnSearchEvents.addActionListener(e -> {
-            // Search event logic
-        });
         add(btnSearchEvents);
+        btnSearchEvents.addActionListener(this);
+       
         
        ImageIcon a1 = new ImageIcon("images/welcomebg.jpg");
        Image a2 = a1.getImage().getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
@@ -108,13 +91,13 @@ public class adminFrameGeneral extends JFrame implements ActionListener {
 public void actionPerformed(ActionEvent e) {
     if (e.getSource() == btnAdd) {
         this.dispose();
-        new adminAddEvent();
+        new adminAddEventFinal();
     } else if (e.getSource() == btnUpdate) {
         this.dispose();
-        new adminAddEvent();
+        new adminAddEventFinal();
     } else if (e.getSource() == btnDelete){
         this.dispose();
-        new adminSearchAndDelete();
+       new adminSearchAndDelete();
     } else if (e.getSource() == btnSearchEvents){
         this.dispose();
         new adminSearchAndDelete();
