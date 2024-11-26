@@ -14,13 +14,13 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
     JButton btnBday,btnWed,btnChris,btnTap,btnOpenAdmin;
     JLabel lblBdayImage,lblWedImageFinal,lblChristeningImageFinal,lblTagline,lblHeader;
     JPanel pnlBdayImage,pnlWeddingImage,pnlChristeningImage,pnlHeader;
+    
     evsWelcomePageGUI(){
         
         setSize(1000,800);
         setTitle("Venue Venture");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        getContentPane().setBackground(new Color(213, 182, 238)); 
         setLocationRelativeTo(null); 
         setLayout(null);
       
@@ -128,12 +128,20 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
         pnlHeader.setBackground(new Color(190, 140, 229));
         add(pnlHeader);
     
+    ImageIcon lblBg = new ImageIcon("images/bg.jpg");
+    Image lblBg1 = lblBg.getImage().getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
+    ImageIcon lblBg2 = new ImageIcon(lblBg1);
+    JLabel lblBgFinal = new JLabel(lblBg2);
+    lblBgFinal.setBounds(0, 0, 1000,800);
+    add(lblBgFinal);
+    
         setVisible(true);
 
     }
+    @Override
     public void actionPerformed(ActionEvent e) { 
    if(e.getSource()==btnBday){
-    this.dispose();
+     this.dispose();
      new userPageDisplay();
      }else if(e.getSource()==btnWed){
         this.dispose();
@@ -152,7 +160,7 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
      new userPageDisplay();
      }else if(e.getSource()==btnOpenAdmin){
         this.dispose();
-       new adminLogin();
+      new adminLog();
         dispose();
        
         }

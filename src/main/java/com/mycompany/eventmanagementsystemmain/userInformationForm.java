@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import javax.swing.border.*;
+
 
 
 public class userInformationForm extends JFrame implements ActionListener{
@@ -23,31 +23,31 @@ public class userInformationForm extends JFrame implements ActionListener{
         
         lblName = new JLabel("Name:");
         lblName.setBounds(100, 200, 100, 30);
-        lblName.setForeground(Color.BLACK);
+        lblName.setForeground(new Color(66, 3, 104));
         lblName.setFont(new Font("",Font.ROMAN_BASELINE,18));
         add(lblName);
         
         lbliD = new JLabel("ID:");
         lbliD.setBounds(100, 250, 100, 30);
-        lbliD.setForeground(Color.BLACK);
+        lbliD.setForeground(new Color(66, 3, 104));
         lbliD.setFont(new Font("",Font.ROMAN_BASELINE,18));
         add(lbliD);
         
         lblEmail = new JLabel("EMAIL:");
         lblEmail.setBounds(100, 300, 100, 30);
-        lblEmail.setForeground(Color.BLACK);
+        lblEmail.setForeground(new Color(66, 3, 104));
         lblEmail.setFont(new Font("",Font.ROMAN_BASELINE,18));
         add(lblEmail);
         
         lblEid = new JLabel("EVENT I.D:");
         lblEid.setBounds(100, 350, 100, 30);
-        lblEid.setForeground(Color.BLACK);
+        lblEid.setForeground(new Color(66, 3, 104));
         lblEid.setFont(new Font("",Font.ROMAN_BASELINE,18));
         add(lblEid);
         
         lblFeedback = new JLabel("FEEDBACK:");
         lblFeedback.setBounds(100, 420, 160, 30);
-        lblFeedback.setForeground(Color.BLACK);
+        lblFeedback.setForeground(new Color(66, 3, 104));
         lblFeedback.setFont(new Font("",Font.ROMAN_BASELINE,18));
         add(lblFeedback);
         
@@ -57,6 +57,7 @@ public class userInformationForm extends JFrame implements ActionListener{
         btnSFeedback.setFocusable(true);
         btnSFeedback.setBounds(400, 650, 200, 40);
         btnSFeedback.setFont(new Font("",Font.ROMAN_BASELINE,13));
+        btnSFeedback.setForeground(new Color(66, 3, 104));
         btnSFeedback.setBackground(new Color(144, 5, 229));
         add(btnSFeedback);
         btnSFeedback.addActionListener(this);
@@ -69,6 +70,7 @@ public class userInformationForm extends JFrame implements ActionListener{
         btnSubmitform.setFocusable(true);
         btnSubmitform.setBounds(680, 650, 200, 40);
         btnSubmitform.setFont(new Font("",Font.ROMAN_BASELINE,13));
+        btnSubmitform.setForeground(new Color(66, 3, 104));
         btnSubmitform.setBackground(new Color(144, 5, 229));
         add(btnSubmitform);
         btnSubmitform.addActionListener(this);
@@ -78,7 +80,7 @@ public class userInformationForm extends JFrame implements ActionListener{
         tfName.setBorder(null);
         tfName.setOpaque(true);
         tfName.setFocusable(true);
-        tfName.setForeground(Color.BLACK);
+        tfName.setForeground(new Color(66, 3, 104));
         tfName.setBounds(400, 200, 480, 35);
         tfName.setBackground(new Color(190,140,229));
         add(tfName);
@@ -87,7 +89,7 @@ public class userInformationForm extends JFrame implements ActionListener{
         tfId.setBorder(null);
         tfId.setOpaque(true);
         tfId.setFocusable(true);
-        tfId.setForeground(Color.BLACK);
+        tfId.setForeground(new Color(66, 3, 104));
         tfId.setBounds(400, 250, 480, 35);
         tfId.setBackground(new Color(190,140,229));
         add(tfId);
@@ -97,7 +99,7 @@ public class userInformationForm extends JFrame implements ActionListener{
         tfEmail.setBorder(null);
         tfEmail.setOpaque(true);
         tfEmail.setFocusable(true);
-        tfEmail.setForeground(Color.BLACK);
+        tfEmail.setForeground(new Color(66, 3, 104));
         tfEmail.setBounds(400, 300, 480, 35);
         tfEmail.setBackground(new Color(190,140,229));
         add(tfEmail);
@@ -106,13 +108,13 @@ public class userInformationForm extends JFrame implements ActionListener{
         tfEid.setBorder(null);
         tfEid.setOpaque(true);
         tfEid.setFocusable(true);        
-        tfEid.setForeground(Color.BLACK);
+        tfEid.setForeground(new Color(66, 3, 104));
         tfEid.setBounds(400, 350, 480, 35);
         tfEid.setBackground(new Color(190,140,229));
         add(tfEid);
         
         taFeedback = new JTextArea();
-        taFeedback.setForeground(Color.BLACK);
+        taFeedback.setForeground(new Color(66, 3, 104));
         taFeedback.setBounds(400, 420, 480, 200);
         taFeedback.setBackground(new Color(190,140,229));
         add(taFeedback);
@@ -126,9 +128,11 @@ public class userInformationForm extends JFrame implements ActionListener{
 
         pnlDown = new JPanel();
         pnlDown.setBounds(0, 0, 300, 800);
-        pnlDown.setForeground(Color.WHITE);
+        pnlDown.setForeground(new Color(66, 3, 104));
         pnlDown.setBackground(new Color(190,140,229));
         add(pnlDown);
+        
+       
         
         
         
@@ -140,7 +144,7 @@ public class userInformationForm extends JFrame implements ActionListener{
             if(!tfName.getText().isEmpty() && !tfId.getText().isEmpty()&&
               !tfEmail.getText().isEmpty() && !tfEid.getText().isEmpty()){
                btnSubmitform.setEnabled(true);
-               
+               JOptionPane.showMessageDialog(null, "Please answer all fields to proceed.");
                
                //enter database /call method              
             }else{

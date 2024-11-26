@@ -187,10 +187,11 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==btnAddEvent){
             try {
-                addEventToDatabase();
+                addEventToDatabase(); // listing events to database.
             } catch (SQLException ex) {
                 Logger.getLogger(adminAddEventFinal.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } 
+              startTimer(); //method for event scheduled time.
         }else if(e.getSource()==btnUpdateDataBase){
             updateDatabase();
         }  
@@ -232,5 +233,9 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
 }
 
            
+    }
+
+    private void startTimer() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
