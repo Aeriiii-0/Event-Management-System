@@ -1,3 +1,4 @@
+
 package com.mycompany.userInfo;
 
 import javax.swing.*;
@@ -6,9 +7,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
-public class PostEventReviewer extends JFrame {
+public class PostEventAnalytics extends JFrame {
 
-    public PostEventReviewer(String name, String id, String email, String eventId, String feedback, JFrame previousFrame) {
+    public PostEventAnalytics(String name, String id, String email, String eventId, String feedback, JFrame previousFrame) {
         
         setTitle("Event Analytics");
         setSize(1000, 800);

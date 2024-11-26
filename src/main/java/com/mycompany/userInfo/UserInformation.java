@@ -1,3 +1,4 @@
+
 package com.mycompany.userInfo;
 
 import javax.swing.*;
@@ -104,7 +105,7 @@ public class UserInformation extends JFrame implements ActionListener {
         }
 
         if (e.getSource() instanceof JButton) {
-            PostEventReviewer reviewer = new PostEventReviewer(submittedName, submittedId, submittedEmail, submittedEventId, submittedFeedback, this);
+            PostEventAnalytics reviewer = new PostEventAnalytics(submittedName, submittedId, submittedEmail, submittedEventId, submittedFeedback, this);
             reviewer.setVisible(true);
             this.dispose();
         }
