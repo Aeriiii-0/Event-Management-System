@@ -1,10 +1,9 @@
-
 package com.mycompany.userInfo;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
 
 public class UserInformation extends JFrame implements ActionListener {
     private JTextField tfName, tfId, tfEmail, tfEid;
@@ -27,6 +26,7 @@ public class UserInformation extends JFrame implements ActionListener {
         tfName = new JTextField();
         tfName.setBounds(400, 200, 480, 35);
         tfName.setBackground(new Color(190, 140, 229));
+        tfName.setBorder(null);
         add(tfName);
 
         JLabel lblId = new JLabel("ID:");
@@ -37,6 +37,7 @@ public class UserInformation extends JFrame implements ActionListener {
         tfId = new JTextField();
         tfId.setBounds(400, 250, 480, 35);
         tfId.setBackground(new Color(190, 140, 229));
+        tfId.setBorder(null);
         add(tfId);
 
         JLabel lblEmail = new JLabel("Email:");
@@ -47,6 +48,7 @@ public class UserInformation extends JFrame implements ActionListener {
         tfEmail = new JTextField();
         tfEmail.setBounds(400, 300, 480, 35);
         tfEmail.setBackground(new Color(190, 140, 229));
+        tfEmail.setBorder(null);
         add(tfEmail);
 
         JLabel lblEid = new JLabel("Event ID:");
@@ -57,6 +59,7 @@ public class UserInformation extends JFrame implements ActionListener {
         tfEid = new JTextField();
         tfEid.setBounds(400, 350, 480, 35);
         tfEid.setBackground(new Color(190, 140, 229));
+        tfEid.setBorder(null);
         add(tfEid);
 
         JLabel lblFeedback = new JLabel("Feedback:");
@@ -67,12 +70,13 @@ public class UserInformation extends JFrame implements ActionListener {
         taFeedback = new JTextArea();
         taFeedback.setBounds(400, 420, 480, 200);
         taFeedback.setBackground(new Color(190, 140, 229));
+        taFeedback.setBorder(null);
         add(taFeedback);
 
-        // Buttons
         btnSubmitForm = new JButton("Submit Form");
         btnSubmitForm.setBounds(400, 650, 200, 40);
         btnSubmitForm.setBackground(new Color(144, 5, 229));
+        btnSubmitForm.setBorder(null);
         btnSubmitForm.setForeground(Color.WHITE);
         btnSubmitForm.addActionListener(this);
         add(btnSubmitForm);
@@ -80,6 +84,7 @@ public class UserInformation extends JFrame implements ActionListener {
         btnSubmitFeedback = new JButton("Submit Feedback");
         btnSubmitFeedback.setBounds(680, 650, 200, 40);
         btnSubmitFeedback.setBackground(new Color(144, 5, 229));
+        btnSubmitFeedback.setBorder(null);
         btnSubmitFeedback.setForeground(Color.WHITE);
         btnSubmitFeedback.addActionListener(this);
         add(btnSubmitFeedback);
