@@ -52,9 +52,9 @@ public class adminLogin extends JFrame {
         userField.setBackground(colorMild);
         userField.setBounds(500, 290, 250, 50);
         userField.setFont(new Font("Arial", Font.BOLD, 30));
+        userField.setBorder(null);
         userField.setForeground(Color.WHITE);
 
-        // Password label and field
         pwLabel = new JLabel("Password:");
         pwLabel.setBounds(200, 400, 250, 30);
         pwLabel.setFont(new Font("Arial", Font.BOLD, 30));
@@ -64,12 +64,14 @@ public class adminLogin extends JFrame {
         pwField.setBackground(colorMild);
         pwField.setBounds(500, 390, 250, 50);
         pwField.setFont(new Font("Arial", Font.BOLD, 30));
+        pwField.setBorder(null);
         pwField.setForeground(Color.WHITE);
 
         logButton = new JButton("Log in");
         logButton.setBounds(400, 550, 210, 60);
         logButton.setFont(new Font("Arial", Font.BOLD, 30));
         logButton.setBackground(colorDark);
+        logButton.setBorder(null);
         logButton.setForeground(Color.WHITE);
 
         logButton.addActionListener(new ActionListener() {
