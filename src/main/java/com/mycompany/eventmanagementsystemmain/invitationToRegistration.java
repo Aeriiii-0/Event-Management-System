@@ -12,16 +12,20 @@ import javax.swing.*;
  * @author Nix
  */
 public class invitationToRegistration extends JFrame{
+
+// Triggered by the startTimer(), for directing user to user information forms (attendance) during the event 
     
     invitationToRegistration(){
-        
-        setSize(1000,800);
-        setTitle("Venue Venture");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setResizable(false);
-        setLocationRelativeTo(null); 
-        setLayout(null);
-      
+
+//component settings
+    setSize(1000,800);
+    setTitle("Venue Venture");
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setResizable(false);
+    setLocationRelativeTo(null); 
+    setLayout(null);
+
+//frame bg 
       ImageIcon humpyy = new ImageIcon("invitation.jpg");
       Image humpyy1 = humpyy.getImage().getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
       ImageIcon humpyy2 = new ImageIcon(humpyy1);
