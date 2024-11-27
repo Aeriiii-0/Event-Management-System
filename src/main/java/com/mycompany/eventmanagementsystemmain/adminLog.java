@@ -9,10 +9,8 @@ import java.awt.Font;
 import java.awt.event.*;
 import javax.swing.*;
 
-/**
- *
- * @author Nix
- */
+
+//admin log-in frame
 public class adminLog extends JFrame implements ActionListener{
     JLabel lblTitle, lblUsername, lblPassword;
     JTextField tfUsername;
@@ -95,15 +93,15 @@ public class adminLog extends JFrame implements ActionListener{
     
      public void actionPerformed(ActionEvent e) {
      if(e.getSource()==btnLogin){  
-       username = tfUsername.getText();
-       password = new String(pfPassword.getPassword());
+       username = tfUsername.getText(); //inputs admin's username
+       password = new String(pfPassword.getPassword()); //inputs admin's password
        
        if (username.isEmpty() || password.isEmpty()) {
         JOptionPane.showMessageDialog(adminLog.this, "Please input all required fields!", "Error", JOptionPane.ERROR_MESSAGE);
         
     } else if (username.equals("AdminEVS") && password.equals("evs123")) {
         JOptionPane.showMessageDialog(adminLog.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        new adminFrameGeneral(); 
+        new adminFrameGeneral(); //frame that directs to admin main frame
         dispose();
      
     } else {
