@@ -16,14 +16,16 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
     JPanel pnlBdayImage,pnlWeddingImage,pnlChristeningImage,pnlHeader;
     
     evsWelcomePageGUI(){
-        
+
+    //component settings
         setSize(1000,800);
         setTitle("Venue Venture");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null); 
         setLayout(null);
-      
+        
+      //buttons
         btnBday=new JButton("Birthday");
         btnBday.setBounds(100, 20, 200, 50);
         btnBday.setFont(new Font("Arial",Font.BOLD,20));
@@ -53,7 +55,8 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
         btnChris.setFocusPainted(false);
         add(btnChris);
         btnChris.addActionListener(this);
-        
+
+        //image on top of panel
         ImageIcon i1 = new ImageIcon("images/birthD.jpg");
         Image i2 = i1.getImage().getScaledInstance(240, 300, Image.SCALE_REPLICATE);
         ImageIcon i3 = new ImageIcon(i2);
@@ -127,39 +130,38 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
         pnlHeader.setBounds(0, 0, 1000, 80);
         pnlHeader.setBackground(new Color(190, 140, 229));
         add(pnlHeader);
-    
-    ImageIcon lblBg = new ImageIcon("images/bg.jpg");
-    Image lblBg1 = lblBg.getImage().getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
-    ImageIcon lblBg2 = new ImageIcon(lblBg1);
-    JLabel lblBgFinal = new JLabel(lblBg2);
-    lblBgFinal.setBounds(0, 0, 1000,800);
-    add(lblBgFinal);
+
+    // image background
+       ImageIcon lblBg = new ImageIcon("images/bg.jpg");
+       Image lblBg1 = lblBg.getImage().getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
+       ImageIcon lblBg2 = new ImageIcon(lblBg1);
+       JLabel lblBgFinal = new JLabel(lblBg2);
+       lblBgFinal.setBounds(0, 0, 1000,800);
+       add(lblBgFinal);
     
         setVisible(true);
 
     }
     @Override
     public void actionPerformed(ActionEvent e) { 
+
+//directs user to user's main frame
    if(e.getSource()==btnBday){
-     this.dispose();
-     new userPageDisplay();
+     dispose();
+     new userPageDisplay(); 
      }else if(e.getSource()==btnWed){
-        this.dispose();
+        dispose();
      new userPageDisplay();
      } else if(e.getSource()==btnChris){
-       this.dispose();
-     new userPageDisplay();
-     }else if(e.getSource()==btnChris){
-        this.dispose();
-     new userPageDisplay();
-     }else if(e.getSource()==btnChris){
-        this.dispose();
+       dispose();
      new userPageDisplay();
      }else if(e.getSource()==btnTap){
-        this.dispose();
+       dispose();
      new userPageDisplay();
-     }else if(e.getSource()==btnOpenAdmin){
-        this.dispose();
+     }
+//directs to admin log-in
+   else if(e.getSource()==btnOpenAdmin){
+       dispose();
       new adminLog();
         dispose();
        
