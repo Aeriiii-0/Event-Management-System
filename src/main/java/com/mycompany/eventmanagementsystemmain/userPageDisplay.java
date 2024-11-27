@@ -19,6 +19,7 @@ public class userPageDisplay extends JFrame implements ActionListener{
       
        
    userPageDisplay(){
+//component settings
         setSize(1000, 800);
         setLocationRelativeTo(null);
         setTitle("EVENT VENTURE");
@@ -36,7 +37,7 @@ public class userPageDisplay extends JFrame implements ActionListener{
         pnlChoose.setBackground(new Color(190, 140, 229));
         add(pnlChoose);
         
-        //birthday components. (bounds > image > panel)
+        //birthday components. 
         btnBirthday = new JButton("Birthday");
         btnBirthday.setBounds(80, 150, 240, 290);
         add(btnBirthday);
@@ -58,7 +59,7 @@ public class userPageDisplay extends JFrame implements ActionListener{
         lblBirthday.setForeground(new Color(97, 3, 154));
         add(lblBirthday);
        
-       //wed comps.
+       //wedding components.
         
         btnWedding = new JButton("Wedding");
         btnWedding.setBounds(385, 150, 240, 290);
@@ -81,7 +82,7 @@ public class userPageDisplay extends JFrame implements ActionListener{
         lblWedding.setForeground(new Color(97, 3, 154));
         add(lblWedding);
       
-        //christening comps
+        //christening components.
         
         btnChristening = new JButton();
         btnChristening.setBounds(690, 150, 240, 290);
@@ -132,22 +133,19 @@ public class userPageDisplay extends JFrame implements ActionListener{
         setVisible(true);
 }      @Override
        public void actionPerformed(ActionEvent e){
-        
-             if(e.getSource() == btnBirthday){
-             this.dispose();
+      //directs user to user inquiry (celebrantInformationFormFINAL)
+       if(e.getSource() == btnBirthday){
+             dispose();
              new celebrantInformationFormFINAL();
              dispose();
         } else if (e.getSource() == btnWedding) {
-            this.dispose();
+            dispose();
             new celebrantInformationFormFINAL();
             dispose();
         } else if (e.getSource() == btnChristening) {
-            this.dispose();
+            dispose();
             new celebrantInformationFormFINAL();
-        } else {
-            JOptionPane.showMessageDialog(null, "Please Select an Event");
-        }
-                     
+        }          
        }
              }
                
