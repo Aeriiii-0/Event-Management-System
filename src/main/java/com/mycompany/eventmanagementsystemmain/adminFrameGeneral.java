@@ -20,13 +20,16 @@ public class adminFrameGeneral extends JFrame implements ActionListener {
    
 
         adminFrameGeneral(){
+            
+  //component settings
         setSize(1000, 800);
         setTitle("Venue Venture");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(null);
-        
+
+    //buttons without borders
         btnAdd = new JButton("ADD");
         btnAdd.setFont(new Font("Serif", Font.BOLD, 20));
         btnAdd.setBounds(90, 500, 180, 40);
@@ -75,7 +78,7 @@ public class adminFrameGeneral extends JFrame implements ActionListener {
         add(btnSearchEvents);
         btnSearchEvents.addActionListener(this);
        
-        
+   //background image settings
        ImageIcon a1 = new ImageIcon("images/welcomebg.jpg");
        Image a2 = a1.getImage().getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
        ImageIcon a3 = new ImageIcon(a2);
@@ -90,16 +93,16 @@ public class adminFrameGeneral extends JFrame implements ActionListener {
     @Override
 public void actionPerformed(ActionEvent e) {
     if (e.getSource() == btnAdd) {
-        this.dispose();
-        new adminAddEventFinal();
+       dispose(); 
+        new adminAddEventFinal(); // frame for adding and updating events to database
     } else if (e.getSource() == btnUpdate) {
-        this.dispose();
-        new adminAddEventFinal();
+       dispose();
+        new adminAddEventFinal();  
     } else if (e.getSource() == btnDelete){
-        this.dispose();
-       new adminSearchAndDelete();
+        dispose();
+       new adminSearchAndDelete();  // frame for searching and deleting events or information
     } else if (e.getSource() == btnSearchEvents){
-        this.dispose();
+        dispose();
         new adminSearchAndDelete();
     }
 }
