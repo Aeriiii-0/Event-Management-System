@@ -196,7 +196,9 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
               startTimer(); //method for event scheduled time.
         }else if(e.getSource()==btnUpdateDataBase){
             updateDatabase();
-        }  
+        } else if(e.getSource()==btnBack){
+            adminFrameGeneral();
+        
     }
     
     private void updateDatabase() {
