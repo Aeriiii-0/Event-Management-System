@@ -73,7 +73,7 @@ public class celebrantInformationFormFINAL extends JFrame implements ActionListe
     add(cmbAttendeeReq);
     
  
-    lblDate = new JLabel ("Date (dd/mm/yyyy): ");
+    lblDate = new JLabel ("Date (yyyy-MM-dd): ");
     lblDate.setFont(new Font("Serif",Font.BOLD,25));
     lblDate.setForeground(Color.BLACK);
     lblDate.setBounds(80, 280, 230, 160);
