@@ -185,7 +185,7 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
         setVisible(true);
     } 
 
-    @Override
+  @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==btnAddEvent){
             try {
@@ -196,15 +196,15 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
               startTimer(); //method for event scheduled time.
         }else if(e.getSource()==btnUpdateDataBase){
             updateDatabase();
-        } else if(e.getSource()==btnBack){
-            adminFrameGeneral();
+        }  else if(e.getSource()==btnBack){
+          new adminFrameGeneral();
         
+    }
     }
     
     private void updateDatabase() {
-        //updates information to database.
+        
     }
-
   
 //add events to event table in database.
     private void addEventToDatabase() throws SQLException {
