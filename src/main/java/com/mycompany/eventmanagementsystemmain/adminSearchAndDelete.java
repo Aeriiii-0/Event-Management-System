@@ -6,32 +6,32 @@ import java.awt.*;
 import javax.swing.*;
 
 
-
-public class adminSearchAndDelete extends JFrame{
-    JTextField tfTxt;
+//frame for seach and deleting events to database
+public class adminSearchAndDelete extends JFrame implements ActionListener{
+    JTextField tfSearch;
     JLabel lblTitle;
-    JButton btndelEvent, btnlookEvent;
-    JTextArea txaSearch;
+    JButton btnDeleteEvent, btnSearchEvent;
+    JTextArea txaDisplayEventFound;
     JPanel pnlSearchBg;
  
         adminSearchAndDelete(){
         
-        
+        //component settings
         setSize(1000, 800);
         setLayout(null);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(new Color(213, 182, 238));
         
-        tfTxt = new JTextField("Type here...");
-        tfTxt.setBorder(null);
-        tfTxt.setOpaque(true);
-        tfTxt.setFocusable(true);
-        tfTxt.setForeground(new Color(66, 3, 104));
-        tfTxt.setBounds(115, 65, 770, 65);
-        tfTxt.setBackground(new Color(213, 182, 238));
-        tfTxt.setFont(new Font("Arial",Font.BOLD,15));
-        add(tfTxt);
+        tfSearch = new JTextField("Type here...");
+        tfSearch.setBorder(null);
+        tfSearch.setOpaque(true);
+        tfSearch.setFocusable(true);
+        tfSearch.setForeground(new Color(66, 3, 104));
+        tfSearch.setBounds(115, 65, 770, 65);
+        tfSearch.setBackground(new Color(213, 182, 238));
+        tfSearch.setFont(new Font("Arial",Font.BOLD,15));
+        add(tfSearch);
         
         pnlSearchBg=new JPanel();
         pnlSearchBg.setBounds(100, 50, 800, 96);
@@ -44,44 +44,46 @@ public class adminSearchAndDelete extends JFrame{
         lblTitle.setFont(new Font("Arial",Font.BOLD,15));
         add(lblTitle);
      
-        btndelEvent = new JButton("Delete");
-        btndelEvent.setBounds(200, 650, 146, 53);
-        btndelEvent.setFont(new Font("Arial",Font.BOLD,28));
-        btndelEvent.setForeground(new Color(66, 3, 104));
-        btndelEvent.setFocusable(false);
-        btndelEvent.setContentAreaFilled(false);
-        btndelEvent.setBorderPainted(false);
-        btndelEvent.setFocusPainted(false);
-        btndelEvent.setBackground(new Color(190, 140, 229));
-        add(btndelEvent);
- //       btnldel.addActionListener(this);
+        btnDeleteEvent = new JButton("Delete");
+        btnDeleteEvent.setBounds(200, 650, 146, 53);
+        btnDeleteEvent.setFont(new Font("Arial",Font.BOLD,28));
+        btnDeleteEvent.setForeground(new Color(66, 3, 104));
+        btnDeleteEvent.setFocusable(false);
+        btnDeleteEvent.setContentAreaFilled(false);
+        btnDeleteEvent.setBorderPainted(false);
+        btnDeleteEvent.setFocusPainted(false);
+        btnDeleteEvent.setBackground(new Color(190, 140, 229));
+        add(btnDeleteEvent);
+        btnDeleteEvent.addActionListener(this);
 
         
-        btnlookEvent = new JButton("Search");
-        btnlookEvent.setBounds(645, 650, 146, 53);
-        btnlookEvent.setFont(new Font("Arial",Font.BOLD,28));
-        btnlookEvent.setForeground(new Color(66, 3, 104));
-        btnlookEvent.setFocusable(false);
-        btnlookEvent.setContentAreaFilled(false);
-        btnlookEvent.setBorderPainted(false);
-        btnlookEvent.setFocusPainted(false);
-        btnlookEvent.setBackground(new Color(190, 140, 229));
-        add(btnlookEvent);
-//        btnlook.addActionListener(this);
+        btnSearchEvent = new JButton("Search");
+        btnSearchEvent.setBounds(645, 650, 146, 53);
+        btnSearchEvent.setFont(new Font("Arial",Font.BOLD,28));
+        btnSearchEvent.setForeground(new Color(66, 3, 104));
+        btnSearchEvent.setFocusable(false);
+        btnSearchEvent.setContentAreaFilled(false);
+        btnSearchEvent.setBorderPainted(false);
+        btnSearchEvent.setFocusPainted(false);
+        btnSearchEvent.setBackground(new Color(190, 140, 229));
+        add(btnSearchEvent);
+        btnSearchEvent.addActionListener(this);
         
-        txaSearch = new JTextArea(); 
-        txaSearch.setBounds(100, 200, 800, 400);
-        txaSearch.setBackground(new Color(190, 140, 229));
-        txaSearch.setForeground(new Color(66, 3, 104));
-        txaSearch.setEditable(false);
-        add(txaSearch);
+        txaDisplayEventFound = new JTextArea(); 
+        txaDisplayEventFound.setBounds(100, 200, 800, 400);
+        txaDisplayEventFound.setBackground(new Color(190, 140, 229));
+        txaDisplayEventFound.setForeground(new Color(66, 3, 104));
+        txaDisplayEventFound.setEditable(false);
+        add(txaDisplayEventFound);
          
         setVisible(true);
     
     }
-//        public void actionPerformed(ActionEvent e){
-//            if(e.getSource()== btnldel)
-//        }
+       public void actionPerformed(ActionEvent e){
+          if(e.getSource()== btnDeleteEvent){
+              //no method yet.
+          }
+      }
 
     
 
