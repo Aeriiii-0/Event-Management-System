@@ -140,11 +140,21 @@ public class celebrantInformationFormFINAL extends JFrame implements ActionListe
             String timeDuration = (String) cmbDuration.getSelectedItem(); // longevity of the event
         
          //file handling for directing users information of request to admin approval slip
-        try (PrintWriter writer = new PrintWriter(new FileWriter("userData.txt", true))) {
+         try (PrintWriter writer = new PrintWriter(new FileWriter("userData.txt", true))) {
             writer.println(name + " | " + date + " | " + attendees + " | " + timeDuration + " | " + eventTime);
             JOptionPane.showMessageDialog(null, "Schedule requested successfully!");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Failed to save the schedule. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+         int conf= JOptionPane.showConfirmDialog(null, "Do you want to exit?");
+                      if(conf==JOptionPane.YES_OPTION){
+                  JOptionPane.showMessageDialog(null, "See you soon !! >.<"); 
+                  System.exit(0);}
+              
+        else{
+         evsWelcomePageGUI wlcPg=new evsWelcomePageGUI();
+         wlcPg.setVisible(true);
         }
         }
        
