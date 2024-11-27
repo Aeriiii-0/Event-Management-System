@@ -24,12 +24,13 @@ public class celebrantInformationFormFINAL extends JFrame implements ActionListe
   String[] eventDuration;
     
   celebrantInformationFormFINAL(){
-    
-    this.setSize(1000, 800);
-    this.setLocationRelativeTo(null);
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.setLayout(null);
-    this.getContentPane().setBackground(new Color(244, 187, 255));
+
+//component settings
+    setSize(1000, 800);
+    setLocationRelativeTo(null);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLayout(null);
+    getContentPane().setBackground(new Color(244, 187, 255));
     
     lblHeader = new JLabel("CELEBRANT INFORMATION FORM");
     lblHeader.setFont(new Font("Serif",Font.BOLD,25));
@@ -132,12 +133,13 @@ public class celebrantInformationFormFINAL extends JFrame implements ActionListe
     public void actionPerformed(ActionEvent e) {
         
         if (e.getSource() == btnRequest){
-            String name = txtName.getText();
-            String date = txtDate.getText();
-            String eventTime = txtEvent.getText();
-            String attendees = (String) cmbAttendeeReq.getSelectedItem();
-            String timeDuration = (String) cmbDuration.getSelectedItem();
+            String name = txtName.getText(); // name of celebrant
+            String date = txtDate.getText(); // date of celebration
+            String eventTime = txtEvent.getText(); //time to party to take place
+            String attendees = (String) cmbAttendeeReq.getSelectedItem(); // attendee population selection
+            String timeDuration = (String) cmbDuration.getSelectedItem(); // longevity of the event
         
+         //file handling for directing users information of request to admin approval slip
         try (PrintWriter writer = new PrintWriter(new FileWriter("userData.txt", true))) {
             writer.println(name + " | " + date + " | " + attendees + " | " + timeDuration + " | " + eventTime);
             JOptionPane.showMessageDialog(null, "Schedule requested successfully!");
