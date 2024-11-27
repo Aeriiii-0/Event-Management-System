@@ -29,13 +29,15 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
     String [] eventDuration = {"Select Option", "2 hours", "3 hours and half hours" , "5 hours"}; 
     
     adminAddEventFinal(){
-        this.setSize(1000, 800);
-        this.setTitle("Event Venture");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(false);
+
+        //component settings
+        setSize(1000, 800);
+        setTitle("Event Venture");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
         getContentPane().setBackground(new Color(213, 182, 238));
-        this.setLocationRelativeTo(null);
-        this.setLayout(null);
+        setLocationRelativeTo(null);
+        setLayout(null);
 
         pnlNorth = new JPanel();
         pnlNorth.setLayout(null);
@@ -198,18 +200,19 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
     }
     
     private void updateDatabase() {
-        
+        //updates information to database.
     }
 
   
-
+//add events to event table in database.
     private void addEventToDatabase() throws SQLException {
-        inputEventId = tfEventName.getText();
-        inputDate = tfDate.getText();
-        inputName = tfName.getText();
-        inputAttendees = tfAttendees.getText();
-        inputTimeDuration = (String) cmbDuration.getSelectedItem();
-        inputTimeOfEvent = tfTimeEvent.getText();
+        
+        inputEventId = tfEventName.getText();   // event ID 
+        inputDate = tfDate.getText(); // records date 
+        inputName = tfName.getText(); // name of the celebrant
+        inputAttendees = tfAttendees.getText(); // attendee population selection
+        inputTimeDuration = (String) cmbDuration.getSelectedItem(); // how long the party will take place
+        inputTimeOfEvent = tfTimeEvent.getText(); // what time the party will be held (start of the timer)
 
         if (inputEventId.isEmpty() || inputName.isEmpty() || inputDate.isEmpty() ||  inputAttendees.isEmpty() ||  inputTimeOfEvent.isEmpty() || cmbDuration.getSelectedIndex() < 0) {
            txaNotif.setText("Please fill all the required fields");
@@ -236,6 +239,7 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
     }
 
     private void startTimer() {
+        //triggered by inputTimeOfEvent
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
