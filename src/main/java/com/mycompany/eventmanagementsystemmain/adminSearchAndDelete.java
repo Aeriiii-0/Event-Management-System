@@ -2,8 +2,9 @@
 package com.mycompany.eventmanagementsystemmain;
 
 
-import java.awt.*;
 import javax.swing.*;
+import java.awt.event.*;
+import java.awt.*;
 
 
 //frame for seach and deleting events to database
