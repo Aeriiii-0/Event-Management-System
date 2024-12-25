@@ -1,9 +1,0 @@
-com\mycompany\eventmanagementsystemmain\adminFrameGeneral.class
-com\mycompany\eventmanagementsystemmain\celebrantInformationForm.class
-com\mycompany\eventmanagementsystemmain\EventManagementSystemMain.class
-com\mycompany\eventmanagementsystemmain\adminLog.class
-com\mycompany\eventmanagementsystemmain\userInformationForm.class
-com\mycompany\eventmanagementsystemmain\userPageDisplay.class
-com\mycompany\eventmanagementsystemmain\adminSearchAndDelete.class
-com\mycompany\eventmanagementsystemmain\adminAddEvent.class
-com\mycompany\eventmanagementsystemmain\evsWelcomePageGUI.class
