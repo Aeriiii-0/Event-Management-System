@@ -230,29 +230,8 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
         lblHeader.setForeground(new Color(66, 3, 104));
         add(lblHeader);
         
+        
         eventTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int selectedRow = eventTable.getSelectedRow(); // Get the row that was clicked
-
-                // Get the data from each column of the selected row
-                if (selectedRow != -1) {
-                    String eventName = tblModel.getValueAt(selectedRow, 0).toString(); 
-                    String name = tblModel.getValueAt(selectedRow, 1).toString();    
-                    String date = tblModel.getValueAt(selectedRow, 2).toString();   
-                    String attendees = tblModel.getValueAt(selectedRow, 3).toString(); 
-                    String duration = tblModel.getValueAt(selectedRow, 4).toString(); 
-                    String timeOfEvent = tblModel.getValueAt(selectedRow, 5).toString(); 
-
-                    // Set the retrieved data to the respective textfields
-                    tfName.setText(name);             
-                    tfDate.setText(date);            
-                    tfTimeEvent.setText(timeOfEvent);
-                    cmbEventName.setSelectedItem(eventName);
-                    cmbAttendeePopulation.setSelectedItem(attendees); 
-                    cmbDuration.setSelectedItem(duration);  
-                }
-            }
-        });eventTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = eventTable.getSelectedRow(); // Get the row that was clicked
 
