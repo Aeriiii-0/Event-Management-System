@@ -28,7 +28,7 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
       //buttons
         btnBday=new JButton("Birthday");
         btnBday.setBounds(100, 20, 200, 50);
-        btnBday.setFont(new Font("Arial",Font.BOLD,20));
+        btnBday.setFont(new Font("Serif",Font.BOLD,20));
         btnBday.setForeground(new Color(97, 3, 154));
         btnBday.setBorderPainted(false);
         btnBday.setContentAreaFilled(false);
@@ -38,7 +38,7 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
         
         btnWed=new JButton("Wedding");
         btnWed.setBounds(400, 20, 200, 50);
-        btnWed.setFont(new Font("Arial",Font.BOLD,20));
+        btnWed.setFont(new Font("Serif",Font.BOLD,20));
         btnWed.setForeground(new Color(97, 3, 154));
         btnWed.setBorderPainted(false);
         btnWed.setContentAreaFilled(false);
@@ -48,7 +48,7 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
         
         btnChris=new JButton("Christening");
         btnChris.setBounds(700, 20, 200, 50);
-        btnChris.setFont(new Font("Arial",Font.BOLD,20));
+        btnChris.setFont(new Font("Serif",Font.BOLD,20));
         btnChris.setForeground(new Color(97, 3, 154));
         btnChris.setBorderPainted(false);
         btnChris.setContentAreaFilled(false);
@@ -101,13 +101,13 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
         
         lblHeader=new JLabel("Venue Venture",SwingConstants.CENTER);
         lblHeader.setBounds(0, 520, 1000, 30);
-        lblHeader.setFont(new Font("Arial",Font.BOLD,25));
+        lblHeader.setFont(new Font("Serif",Font.BOLD,25));
         lblHeader.setForeground(new Color(97, 3, 154));
         add(lblHeader);
         
-        btnTap=new JButton("Tap here to book ");
+        btnTap=new JButton("Tap here to log-in or sign-up ");
         btnTap.setBounds(0, 540, 1000, 50);
-        btnTap.setFont(new Font("Arial",Font.BOLD,12));
+        btnTap.setFont(new Font("Serif",Font.BOLD,17));
         btnTap.setForeground(new Color(	66, 3, 104));
         btnTap.setBorderPainted(false);
         btnTap.setContentAreaFilled(false);
@@ -117,8 +117,8 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
       
         
         btnOpenAdmin=new JButton("Admin Log-in");
-        btnOpenAdmin.setBounds(800, 650, 200, 50);
-        btnOpenAdmin.setFont(new Font("Arial",Font.BOLD,12));
+        btnOpenAdmin.setBounds(780, 650, 200, 50);
+        btnOpenAdmin.setFont(new Font("Serif",Font.BOLD,17));
         btnOpenAdmin.setForeground(new Color(	66, 3, 104));
         btnOpenAdmin.setBorderPainted(false);
         btnOpenAdmin.setContentAreaFilled(false);
@@ -157,13 +157,13 @@ public class evsWelcomePageGUI extends JFrame implements ActionListener{
      new userPageDisplay();
      }else if(e.getSource()==btnTap){
        dispose();
-     new userPageDisplay();
+     new userLoginAndSignup();
      }
 //directs to admin log-in
    else if(e.getSource()==btnOpenAdmin){
        dispose();
       new adminLog();
-        dispose();
+
        
         }
   

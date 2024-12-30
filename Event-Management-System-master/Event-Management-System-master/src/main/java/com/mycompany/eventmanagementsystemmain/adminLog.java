@@ -15,7 +15,7 @@ public class adminLog extends JFrame implements ActionListener{
     JLabel lblTitle, lblUsername, lblPassword;
     JTextField tfUsername;
     JPasswordField pfPassword;
-    JButton btnLogin;
+    JButton btnLogin,btnBack;
     JPanel pnlHeader,backgroundPanel;
      String username,password;
     adminLog(){
@@ -51,6 +51,7 @@ public class adminLog extends JFrame implements ActionListener{
         // Username text field
         tfUsername = new JTextField();
         tfUsername.setBackground(new Color(213, 182, 238));
+        tfUsername.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 2)); 
         tfUsername.setForeground(new Color(66, 3, 104));
         tfUsername.setBounds(380, 240, 450, 40); 
         tfUsername.setFont(new Font("Serif", Font.BOLD, 20)); 
@@ -66,6 +67,7 @@ public class adminLog extends JFrame implements ActionListener{
         // Password field 
         pfPassword = new JPasswordField();
         pfPassword.setBackground(new Color(213, 182, 238));
+        pfPassword.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 2)); 
         pfPassword.setBounds(380, 340, 450, 35);
         pfPassword.setFont(new Font("Serif", Font.BOLD, 20));
         pfPassword.setForeground(new Color(66, 3, 104));
@@ -73,14 +75,25 @@ public class adminLog extends JFrame implements ActionListener{
 
        
         btnLogin = new JButton("Log-in");
-        btnLogin.setFont(new Font("Serif", Font.BOLD, 25));  // Larger button text
-        btnLogin.setBackground(new Color(158, 77, 208));  // Dark purple   
-        btnLogin.setForeground(new Color(228, 206, 243));
-        btnLogin.setBounds(400, 500, 200, 45);  // Center button
-        btnLogin.setFocusPainted(false);  // Remove focus outline
-        btnLogin.setBorderPainted(false);
+        btnLogin.setFont(new Font("Serif", Font.BOLD, 20));  
+        btnLogin.setForeground(new Color(66, 3, 104));
+        btnLogin.setBounds(385, 450, 160, 35); 
+        btnLogin.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+        btnLogin.setFocusPainted(false); 
+        btnLogin.setContentAreaFilled(false);  
         add(btnLogin);
         btnLogin.addActionListener(this);
+        
+        btnBack=new JButton("Back");
+        btnBack.setBounds(750, 605, 200, 50);
+        btnBack.setFont(new Font("Arial",Font.BOLD,15));
+        btnBack.setForeground(new Color(66, 3, 104));
+        btnBack.setBorderPainted(false);
+        btnBack.setContentAreaFilled(false);
+        btnBack.setFocusPainted(false);
+        add(btnBack);
+        btnBack.addActionListener(this);
+
         
         backgroundPanel = new JPanel();
         backgroundPanel.setBackground(new Color(190, 140, 229));  
@@ -95,8 +108,8 @@ public class adminLog extends JFrame implements ActionListener{
      if(e.getSource()==btnLogin){  
        username = tfUsername.getText(); //inputs admin's username
        password = new String(pfPassword.getPassword()); //inputs admin's password
-       
-       if (username.isEmpty() || password.isEmpty()) {
+        new adminFrameGeneral();
+     /*  if (username.isEmpty() || password.isEmpty()) {
         JOptionPane.showMessageDialog(adminLog.this, "Please input all required fields!", "Error", JOptionPane.ERROR_MESSAGE);
         
     } else if (username.equals("AdminEVS") && password.equals("evs123")) {
@@ -106,8 +119,12 @@ public class adminLog extends JFrame implements ActionListener{
      
     } else {
         JOptionPane.showMessageDialog(adminLog.this, "Wrong Password/Username. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-                      
+    } */
+     }
+       else if(e.getSource()==btnBack){
+          new evsWelcomePageGUI(); //back to welcome page
+       }
+   //  }          
  
-}}}
+}}
 

@@ -39,7 +39,7 @@ public class invitationToRegistration extends JFrame implements ActionListener{
       add(lblBgFinalh);
       
       
-      btnEnterEvent = new JButton("Register");
+      btnEnterEvent = new JButton("Exit");
       btnEnterEvent.setBounds(400, 470, 190, 50);
       btnEnterEvent.setForeground(new Color(255, 255, 255));
       btnEnterEvent.setFont(new Font("Serif",Font.BOLD,22));
@@ -57,8 +57,8 @@ public class invitationToRegistration extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
     if(e.getSource()==btnEnterEvent){
-            new userInformationForm();
-            dispose();
+      JOptionPane.showMessageDialog(null, "The event is done! Thank you for staying with us!");
+      System.exit(0);
     }
     }
 

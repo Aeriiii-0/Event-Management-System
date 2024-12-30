@@ -94,7 +94,8 @@ public class adminFrameGeneral extends JFrame implements ActionListener {
 public void actionPerformed(ActionEvent e) {
     if (e.getSource() == btnAdd) {
        dispose(); 
-        new adminAddEventFinal(); // frame for adding and updating events to database
+       new adminAddEventFinal(); // frame for adding and updating events to database
+   
     } else if (e.getSource() == btnUpdate) {
        dispose();
         new adminAddEventFinal();  

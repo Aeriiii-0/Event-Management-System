@@ -9,14 +9,16 @@ import javax.swing.*;
 
 public class userInformationForm extends JFrame implements ActionListener{
     
-   JLabel lblName, lblID, lblEmail, lblEventId, lblFeedback;
+   JLabel lblUserName, lblID, lblEmail, lblEventId, lblFeedback, lblRegisterCount, lblRegisterCounter;
    JButton btnSubmitFeedback, btnSubmitForm;
-   JTextField tfName, tfId, tfEmail, tfEventId;
+   JTextField tfUserName, tfId, tfEmail, tfEventId;
    JTextArea txaFeedback;
    JPanel pnlUp, pnlDown;
-   String feedbackInput;
+   int attendeeCounter;
    
-    userInformationForm(){
+ userInformationForm(int attendeeCounter){
+ this.attendeeCounter = attendeeCounter;   
+     
     //component settings
         setSize(1000,800);
         setLayout(null);
@@ -24,11 +26,13 @@ public class userInformationForm extends JFrame implements ActionListener{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(new Color(213, 182, 238));
         
-        lblName = new JLabel("Name:");
-        lblName.setBounds(100, 200, 100, 30);
-        lblName.setForeground(new Color(66, 3, 104));
-        lblName.setFont(new Font("",Font.ROMAN_BASELINE,18));
-        add(lblName);
+        
+        
+        lblUserName = new JLabel("Name:");
+        lblUserName.setBounds(100, 200, 100, 30);
+        lblUserName.setForeground(new Color(66, 3, 104));
+        lblUserName.setFont(new Font("",Font.ROMAN_BASELINE,18));
+        add(lblUserName);
         
         lblID = new JLabel("ID:");
         lblID.setBounds(100, 250, 100, 30);
@@ -56,8 +60,6 @@ public class userInformationForm extends JFrame implements ActionListener{
         
         btnSubmitFeedback = new JButton("SUBMIT FEEDBACK");
         btnSubmitFeedback.setBorder(null);
-        btnSubmitFeedback.setOpaque(true);
-        btnSubmitFeedback.setFocusable(true);
         btnSubmitFeedback.setBounds(400, 650, 200, 40);
         btnSubmitFeedback.setFont(new Font("",Font.ROMAN_BASELINE,13));
         btnSubmitFeedback.setForeground(new Color(66, 3, 104));
@@ -69,8 +71,6 @@ public class userInformationForm extends JFrame implements ActionListener{
         
         btnSubmitForm = new JButton("SUBMIT FORM");
         btnSubmitForm.setBorder(null);
-        btnSubmitForm.setOpaque(true);
-        btnSubmitForm.setFocusable(true);
         btnSubmitForm.setBounds(680, 650, 200, 40);
         btnSubmitForm.setFont(new Font("",Font.ROMAN_BASELINE,13));
         btnSubmitForm.setForeground(new Color(66, 3, 104));
@@ -79,14 +79,14 @@ public class userInformationForm extends JFrame implements ActionListener{
         btnSubmitForm.addActionListener(this);
         
         
-        tfName = new JTextField();    
-        tfName.setBorder(null);
-        tfName.setOpaque(true);
-        tfName.setFocusable(true);
-        tfName.setForeground(new Color(66, 3, 104));
-        tfName.setBounds(400, 200, 480, 35);
-        tfName.setBackground(new Color(190,140,229));
-        add(tfName);
+        tfUserName = new JTextField();    
+        tfUserName.setBorder(null);
+        tfUserName.setOpaque(true);
+        tfUserName.setFocusable(true);
+        tfUserName.setForeground(new Color(66, 3, 104));
+        tfUserName.setBounds(400, 200, 480, 35);
+        tfUserName.setBackground(new Color(190,140,229));
+        add(tfUserName);
         
         tfId = new JTextField();        
         tfId.setBorder(null);
@@ -127,7 +127,20 @@ public class userInformationForm extends JFrame implements ActionListener{
         pnlUp.setForeground(Color.WHITE);
         pnlUp.setBackground(new Color(190,140,229));
         pnlUp.setBounds(0, 0, 1000, 120);
+        pnlUp.setLayout(null);
         add(pnlUp);
+        
+        lblRegisterCount=new JLabel("Guests Registered: ");
+        lblRegisterCount.setBounds(50, 40, 400, 30);
+        lblRegisterCount.setForeground(new Color(66, 3, 104));
+        lblRegisterCount.setFont(new Font("",Font.ROMAN_BASELINE,18));
+        pnlUp.add(lblRegisterCount);
+        
+        lblRegisterCounter=new JLabel("0 ");
+        lblRegisterCounter.setBounds(200, 40, 400, 30);
+        lblRegisterCounter.setForeground(new Color(66, 3, 104));
+        lblRegisterCounter.setFont(new Font("",Font.ROMAN_BASELINE,18));
+        pnlUp.add(lblRegisterCounter);
 
         pnlDown = new JPanel();
         pnlDown.setBounds(0, 0, 300, 800);
@@ -135,40 +148,34 @@ public class userInformationForm extends JFrame implements ActionListener{
         pnlDown.setBackground(new Color(190,140,229));
         add(pnlDown);
         
-        setVisible(true);
-        
-        
+          setVisible(true);
         
     }
 
     @Override
    public void actionPerformed(ActionEvent e) {
-       if(e.getSource()==btnSubmitForm){
-            if(!tfName.getText().isEmpty() && !tfId.getText().isEmpty()&&
-              !tfEmail.getText().isEmpty() && !tfEventId.getText().isEmpty() && !txaFeedback.getText().isEmpty()){
-               btnSubmitForm.setEnabled(true);
-                int confirm = JOptionPane.showConfirmDialog(null, "Do you want to submit another entry? ");
-            if (confirm == JOptionPane.YES_OPTION) {
-              new  userInformationForm();
-            }else{
-                JOptionPane.showMessageDialog(null, "Thank you for coming! We hope you had fun!");
-                return;
+       
+        if (e.getSource() == btnSubmitForm) {
+        if(!tfUserName.getText().isEmpty() && !tfId.getText().isEmpty()&&
+              !tfEmail.getText().isEmpty() && !tfEventId.getText().isEmpty()){
+         
+           attendeeCounter++;
+           lblRegisterCounter.setText(": "+attendeeCounter);
+           
+           int askUser=JOptionPane.showConfirmDialog(null, "Do you want to submit another form?");
+           if(askUser==JOptionPane.YES_OPTION){
+               JOptionPane.showMessageDialog(null, "Successful Registration!");
+               tfId.setText(" ");
+               tfEmail.setText(" ");
+               tfEventId.setText(" ");
+               tfUserName.setText(" ");
+               txaFeedback.setText(" ");
+           }}
+            } else {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields.");
             }
-                            
-            }else if(e.getSource()==btnSubmitFeedback){
-                feedbackInput=txaFeedback.getText();
-                if (feedbackInput.isEmpty()){
-                     btnSubmitForm.setEnabled(false); // disables user to submit without a feedback response
-                JOptionPane.showMessageDialog(null, "Please fill the feedback section to submit your form.");
-                }
-                else{
-                JOptionPane.showMessageDialog(null, "Feedback submitted");
-                }
-               
-            }
-       }
-    }}
-   
+        }
+  
     
     
-
+  }
