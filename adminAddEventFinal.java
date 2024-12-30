@@ -26,7 +26,7 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 
-public class adminAddEventFinal extends JFrame implements ActionListener{
+public class try1 extends JFrame implements ActionListener{
     
     JLabel lblHeader, lblEventName, lblName, lblDate, lblAttendees, lblTimeDuration, lblTimeEvent, lblQueue;
     JPanel pnlNorth, pnlCenter, pnlEast;
@@ -47,7 +47,7 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
     int attendeeCounter, maximumCount;
    private Set<Integer> generatedEventIds; 
     
-    adminAddEventFinal(){
+    try1(){
         generatedEventIds = new HashSet<>();
          queue = new PriorityQueue<>(new EventComparator());
         
@@ -230,6 +230,7 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
         lblHeader.setForeground(new Color(66, 3, 104));
         add(lblHeader);
       
+        readDataFromFile("userData.txt");
         //addition of all the panels, ensuring its components' visibility.      
         add(pnlCenter);
         add(pnlEast);
@@ -416,7 +417,7 @@ private void startRegistrationWindow() {
     
 
    if (attendeeCounter<=maximumCount){
-   new userInformationForm( attendeeCounter);
+   //new userInformationForm( attendeeCounter);
 }else{
        JOptionPane.showMessageDialog(this, "Can't Register. Max number of guests has been reached.", "Error", JOptionPane.ERROR_MESSAGE);
        System.exit(0);
@@ -503,7 +504,7 @@ class Event {
         return timeOfEvent;
     }
 } 
-
-
-
+public static void main (String[] args){
+    new try1();
 }
+} 
