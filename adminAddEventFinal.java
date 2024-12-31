@@ -13,10 +13,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.PriorityQueue;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Timer;
@@ -25,26 +28,26 @@ import javax.swing.table.DefaultTableModel;
 
 public class adminAddEventFinal extends JFrame implements ActionListener{
     
-    JLabel lblHeader, lblEventName, lblName, lblDate, lblAttendees, lblTimeDuration, lblTimeEvent, lblQueue;
+    JLabel lblHeader, lblEventName, lblName, lblDate, lblTimeDuration, lblTimeEvent, lblQueue;
     JPanel pnlNorth, pnlCenter, pnlEast;
     JTextField  tfName, tfDate, tfTimeEvent;
     JTextArea txaNotif;
     JButton btnAddEvent, btnRefreshTable, btnBack;
-    JComboBox cmbDuration,cmbAttendeePopulation, cmbEventName;
-    String inputEventId, inputDate, inputName,inputTimeDuration,inputTimeOfEvent,inputAttendeePopulation;
+    JComboBox cmbDuration, cmbEventName;
+    String inputEventId, inputDate, inputName,inputTimeDuration,inputTimeOfEvent;
     String [] eventName= {"Select Option","Birthday","Christening","Wedding"};
     String [] eventDuration = {"Select Option", "2 hours", "3 hours and half hours" , "5 hours"}; 
-    String[] attendeesOption = {"Select an option", "20 persons", "35 persons", "50 persons"}; 
-    String[] columnNames = {"Event Name", "Name", "Date", "Number of Attendees", "Event Duration", "Time of Event"}; 
+    String[] columnNames = {"Event Name", "Name", "Date", "Event Duration", "Time of Event"}; 
     JScrollPane sclPane;
     DefaultTableModel tblModel;
+    PriorityQueue<Event> tempQueue;
+    PriorityQueue<Event> queue;
     JTable eventTable;
-    PriorityQueue<String> queue;
    
     
     adminAddEventFinal(){
-
-        queue = new PriorityQueue<>();
+  
+         queue = new PriorityQueue<>(new EventComparator());
         
         //component settings
         setSize(1000, 800);
@@ -101,11 +104,7 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
         lblDate.setBounds(675, 200, 200, 40);
         pnlCenter.add(lblDate);
         
-        lblAttendees = new JLabel("Attendees: ");
-        lblAttendees.setFont(new Font("Arial", Font.BOLD, 17));
-        lblAttendees.setForeground(new Color(66, 3, 104));
-        lblAttendees.setBounds(675, 280, 200, 40);
-        pnlCenter.add(lblAttendees);
+       
 
         lblTimeDuration = new JLabel("Time Duration:");
         lblTimeDuration.setFont(new Font("Arial", Font.BOLD, 17));
@@ -154,15 +153,7 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
         tfDate.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
         pnlCenter.add(tfDate);
 
-       cmbAttendeePopulation = new JComboBox<>(attendeesOption);  
-       cmbAttendeePopulation.setBorder(null);
-       cmbAttendeePopulation.setBounds(675, 320, 280, 40); 
-       cmbAttendeePopulation.setBackground(new Color(	190, 140, 229));
-       cmbAttendeePopulation.setFont(new Font("Serif",Font.BOLD,15));
-       cmbAttendeePopulation.setForeground(new Color(66, 3, 104));
-       cmbAttendeePopulation.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-       pnlCenter.add(cmbAttendeePopulation);
-
+       
         cmbDuration = new JComboBox<>(eventDuration);  
         cmbDuration.setBorder(null);
         cmbDuration.setBounds(675, 408, 280, 40);  
@@ -213,7 +204,7 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
         btnBack.addActionListener(this);
 
         
- //east panel setting (bottom panel)
+       //east panel setting (bottom panel)
         pnlEast = new JPanel();
         pnlEast.setBounds(0, 663, 1000, 110);
         pnlEast.setLayout(null);
@@ -225,8 +216,30 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
         lblHeader.setForeground(new Color(66, 3, 104));
         add(lblHeader);
         
-       
+        eventTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = eventTable.getSelectedRow(); // Get the row that was clicked
+
+                // Get the data from each column of the selected row
+                if (selectedRow != -1) {
+                    String eventName = tblModel.getValueAt(selectedRow, 0).toString(); 
+                    String name = tblModel.getValueAt(selectedRow, 1).toString();    
+                    String date = tblModel.getValueAt(selectedRow, 2).toString();   
+                    String duration = tblModel.getValueAt(selectedRow, 3).toString(); 
+                    String timeOfEvent = tblModel.getValueAt(selectedRow, 4).toString(); 
+
+                    // Set the retrieved data from the table to the textfields.
+                    tfName.setText(name);             
+                    tfDate.setText(date);            
+                    tfTimeEvent.setText(timeOfEvent);
+                    cmbEventName.setSelectedItem(eventName);
+                    cmbDuration.setSelectedItem(duration);  
+                }
+            }
+        });
         
+        
+        readDataFromFile("userData.txt");
         
         //addition of all the panels, ensuring its components' visibility.      
         add(pnlCenter);
@@ -248,16 +261,55 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
             } 
             
         }else if(e.getSource()==btnRefreshTable){
-            updateDatabase();
+           JOptionPane.showMessageDialog(null, "Refreshing Table...", "Refreshing", JOptionPane.INFORMATION_MESSAGE);
+            readDataFromFile("userData.txt");
+            refreshTable();
         }  else if(e.getSource()==btnBack){
          new adminFrameGeneral(); 
         
     }
     }
-    
-    private void updateDatabase() {
-        
+       //code for refreshing the data in the table
+    public void refreshTable() {
+    tblModel.setRowCount(0); //Clear the table
+    PriorityQueue<Event> tempQueue = new PriorityQueue<>(queue); // Temporary queue for sorted events
+    while (!tempQueue.isEmpty()) {
+        Event event = tempQueue.poll();
+        tblModel.addRow(new Object[]{
+                event.getEventName(),
+                event.getName(),
+                event.getDate(),
+                event.getDuration(),
+                event.getTimeOfEvent()
+        });
     }
+}
+    //code for reading the data from the textfile
+    private void readDataFromFile(String fileName) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            queue.clear(); // Clear the queue to avoid duplicate entries
+            while ((line = br.readLine()) != null) {
+                String[] eventDetails = line.split(","); //seperator of the data in the textfile
+                if (eventDetails.length == 5) {
+                    String eventName = eventDetails[0].trim();
+                    String name = eventDetails[1].trim();
+                    String date = eventDetails[2].trim();
+                    String duration = eventDetails[3].trim();
+                    String timeOfEvent = eventDetails[4].trim();
+
+                    // Add event to the queue
+                    queue.add(new Event(eventName, name, date, duration, timeOfEvent));
+                }
+            }
+            refreshTable(); // Populate the table after loading
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error reading data from file.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
   
     //add events to event table in database.
     public void addEventToDatabase() throws SQLException {
@@ -267,71 +319,56 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
         inputDate = tfDate.getText(); // records date 
         inputName = tfName.getText(); // name of the celebrant
         inputTimeDuration = (String) cmbDuration.getSelectedItem(); // how long the party will take place
-        inputAttendeePopulation = (String) cmbAttendeePopulation.getSelectedItem(); // max number of the guests to attend
         inputTimeOfEvent = tfTimeEvent.getText(); // what time the party will be held (start of the timer)
        
         //validating all the fields are not empty.
-        if (cmbEventName.getSelectedIndex()<0 || inputName.isEmpty() || inputDate.isEmpty() ||  inputAttendeePopulation.isEmpty() ||  inputTimeOfEvent.isEmpty() || cmbDuration.getSelectedIndex() < 0|| cmbDuration.getSelectedIndex()<0) {
-           txaNotif.setText("Please fill all the required fields");
+       if (cmbEventName.getSelectedIndex()<0 || inputName.isEmpty() || inputDate.isEmpty()  ||  inputTimeOfEvent.isEmpty() || cmbDuration.getSelectedIndex() < 0|| cmbDuration.getSelectedIndex()<0) {
+            Event event = new Event(inputEventId, inputName, inputDate, inputTimeOfEvent, inputTimeDuration);
+            queue.add(event);
+            txaNotif.setText("Please fill all the required fields");
             return;
         }
         
-        int eventId= givenEventId(cmbEventName);//method to assign an eventId based on user selection of event. 
+       
         
         //Database connections and inserting queries. Along with the prepared statement and its parameters.
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/eventmanagement", "root", "1234")) {
-            String query = "INSERT INTO event (eventId,eventName, name, date, attendees, time, duration) VALUES (?, ?, ?, ?,?,?,?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, eventId);
-            stmt.setString(2, inputEventId);
-            stmt.setString(3, inputName);
-            stmt.setString(4, inputDate);
-            stmt.setString(5, inputAttendeePopulation);
-            stmt.setString(6, inputTimeOfEvent);
-            stmt.setString(7, inputTimeDuration);
-            
-            stmt.executeUpdate(); //execution of the process.
-            
-            //notification of successful execution.
-            JOptionPane.showMessageDialog(null, "Event Added");
-            txaNotif.setText("Succefully added.");
-        }
-        //exception handling for catchable errors during the process.
-         catch (SQLException e) {
+            String query = "INSERT INTO event (eventName, name, date, time, duration) VALUES (?,?,?,?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                stmt.setString(1, inputEventId);
+                stmt.setString(2, inputName);
+                stmt.setString(3, inputDate);
+                stmt.setString(4, inputTimeOfEvent);
+                stmt.setString(5, inputTimeDuration);
+
+                stmt.executeUpdate(); //execution of the process.
+         
+        //method for auto-incrementation in database. Arranged regardless of the type of event.
+             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int eventId = generatedKeys.getInt(1);
+                        
+                    } else {
+                        throw new SQLException("Adding event failed, no ID available obtained.");
+                    }
+                }
+
+                JOptionPane.showMessageDialog(null, "Event Added");
+                txaNotif.setText("Successfully added to database. Event scheduled.");
+            }
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Input Error: " + e.getMessage());
-        }
 }
 
            
     }
-    /*Assigning eventId by using a method for randomizing the eventId. Each event can hold 250 as its maximum capacity. 
-    Where 1-249 are assigned for birthdays.
-    259-499 are for christenings.
-    500-749 are for weddings.*/
-    
-     private int givenEventId(JComboBox cmbEventName) {
-     int eventId=0;
-                                                   
-     switch(inputEventId){
-       case "Birthday":  
-            eventId = 1 + (int) (Math.random() * 249);
-            break;
-        case "Christening": 
-            eventId = 250 + (int) (Math.random() * 249); 
-            break;
-        case "Wedding": eventId = 500 + (int) (Math.random() * 249);
-            break;
-        default:
-            JOptionPane.showMessageDialog(null, "Please select a valid event type.");
-            break;
-    }
-    return eventId;
-}
 
+
+     //method in-charge for the start and end time of the operations. 
   private void startTimer() {
     try {
-        // Parse the event time from input fields
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        // Parse to ensure that every variable is in the right format.
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         java.util.Date eventDateTime = dateFormat.parse(inputDate + " " + inputTimeOfEvent);
         long eventTimeInMillis = eventDateTime.getTime();
         long currentTimeInMillis = System.currentTimeMillis();
@@ -341,7 +378,7 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
             return;
         }
         
-        // Calculate delay (time until the event starts in milliseconds)
+        // Calculate delay (time until the event starts in milliseconds).
         long delay = eventTimeInMillis - currentTimeInMillis;
 
         // Timer for the event start time
@@ -352,49 +389,41 @@ public class adminAddEventFinal extends JFrame implements ActionListener{
         eventStartTimer.start();
         
         JOptionPane.showMessageDialog(null, "Event scheduled successfully for " + dateFormat.format(eventDateTime));
-         
-        // Reset the form fields after the event has been scheduled
-        resetFields();
+        
+        //reset all the fields.
+        tfDate.setText("");
+        cmbEventName.setSelectedIndex(0);
+        tfName.setText("");
+        tfTimeEvent.setText("");
+        cmbDuration.setSelectedIndex(0);
+
     } catch (ParseException e) {
-        JOptionPane.showMessageDialog(null, "Invalid date/time format. Please use dd/MM/yyyy HH:mm");
+        JOptionPane.showMessageDialog(null, "Invalid date/time format. Please use yyyy-MM-dd HH:mm");
     }
 }
 
-private void resetFields() {
-    // Reset form fields
-    tfDate.setText("");
-    cmbEventName.setSelectedIndex(0);
-    tfName.setText("");
-    tfTimeEvent.setText("");
-    cmbDuration.setSelectedIndex(0);
-    cmbAttendeePopulation.setSelectedIndex(0);
-}
 
 private void startRegistrationWindow() {
-    // Get the duration in minutes based on the selected duration
+    // Get the duration in minutes based on the user's selected duration
     int durationInMinutes = getDurationInMinutes(inputTimeDuration);
     if (durationInMinutes <= 0) {
         JOptionPane.showMessageDialog(null, "Invalid duration selected.");
         return;
     }
     
-    // Timer for the registration period, based on the event duration
+    // Timer for the registration period, based on the event duration. Once done, the system exits. Disabling guests to register.
     Timer registrationTimer = new Timer(durationInMinutes * 60000, e -> {
+        JOptionPane.showMessageDialog(null, "The event is over, thanks for staying with us!");
      System.exit(0);
     });
-    registrationTimer.setRepeats(false); // Ensure it only triggers once
-    registrationTimer.start();
     
-     dispose();
-     String selectedAttendeePopulation = (String) cmbAttendeePopulation.getSelectedItem();
-     
-     new invitationToRegistration(inputAttendeePopulation);
-     
-     
+    registrationTimer.setRepeats(false); // Ensure it's not triggered more than once.
+    registrationTimer.start();
+    dispose();
+    
+   new invitationToRegistration();
 }
-
-
-
+//method for converting hours to minutes.
 private int getDurationInMinutes(String duration) {
     switch (duration) {
         case "2 hours":
@@ -404,11 +433,56 @@ private int getDurationInMinutes(String duration) {
         case "5 hours": 
             return 8; // 5 hours: 300 minutes
         default:
+            JOptionPane.showMessageDialog(null, "No selected Duration.");
             return 0;
     }
 }
 
-   
 
-
+//functions left below are all used for transfering the data from the previous frame (celebrantInformationForm) to the present frame.
+class EventComparator implements Comparator<Event> { 
+    @Override 
+    public int compare(Event a, Event b) { 
+        return a.getEventName().compareToIgnoreCase(b.getEventName()); 
+    } 
 }
+
+//this code summarizes the details of an event, including its name, organizer's name, date, number of attendees, duration, and time of the event.
+class Event {
+    private final String eventName;
+    private final String name;
+    private final String date;
+    private final String duration;
+    private final String timeOfEvent;
+
+  public Event(String eventName, String name, String date, String duration, String timeOfEvent) {
+        this.eventName = eventName;
+        this.name = name;
+        this.date = date;
+        this.duration = duration;
+        this.timeOfEvent = timeOfEvent;
+    }
+
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public String getTimeOfEvent() {
+        return timeOfEvent;
+    }
+    } 
+
+} 
