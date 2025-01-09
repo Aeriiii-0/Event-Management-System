@@ -83,7 +83,7 @@ public class adminSearchAndDelete extends JFrame implements ActionListener{
         add(btnlookEvent);
         btnlookEvent.addActionListener(this);
         
-         String[] columnNames = {"name", "email", "eventID", "feedback"};
+         String[] columnNames = {"eventName", "name", "date", "time", "duration", "status"} ;
          DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -106,9 +106,9 @@ public class adminSearchAndDelete extends JFrame implements ActionListener{
   
     }
         public void Connect() {
-        String url = "jdbc:mysql://localhost:3306/projectdsa";
+        String url = "jdbc:mysql://localhost:3306/eventmanagement";
         String username = "root";
-        String password = "admin123";
+        String password = "1234";
 
         try {
             con = DriverManager.getConnection(url, username, password);
@@ -137,7 +137,7 @@ public class adminSearchAndDelete extends JFrame implements ActionListener{
 
     try {
 
-        pst = con.prepareStatement("DELETE FROM information WHERE eventID = ?");
+        pst = con.prepareStatement("DELETE FROM information WHERE inputName = ?");
         pst.setString(1, eventID);
         int rowsAffected = pst.executeUpdate();
 
@@ -148,19 +148,19 @@ public class adminSearchAndDelete extends JFrame implements ActionListener{
         } else {
             JOptionPane.showMessageDialog(this, "Record not found in the database.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error deleting record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-    } 
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error deleting record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            } 
 
-    if (e.getSource() == btnlookEvent) {
-        String search = tfTxt.getText();
+            if (e.getSource() == btnlookEvent) {
+                String search = tfTxt.getText();
         if (search.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please type something first!", "Alert", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
-                pst = con.prepareStatement("SELECT * FROM information WHERE name = ?");
+                pst = con.prepareStatement("SELECT * FROM information WHERE inputDate = ?");
                 pst.setString(1, search);
                 rs = pst.executeQuery();
 
@@ -170,10 +170,11 @@ public class adminSearchAndDelete extends JFrame implements ActionListener{
                 if (rs.isBeforeFirst()) { 
                     while (rs.next()) { 
                         Vector<Object> v2 = new Vector<>();
-                        v2.add(rs.getString("name"));
-                        v2.add(rs.getString("email"));
-                        v2.add(rs.getString("eventID")); 
-                        v2.add(rs.getString("feedback"));
+                        v2.add(rs.getString("inputEventId"));
+                        v2.add(rs.getString("inputName"));
+                        v2.add(rs.getString("inputDate")); 
+                        v2.add(rs.getString("inputTimeOfEvent"));
+                        v2.add(rs.getString("inputTimeDuration"));
                         df.addRow(v2);
                 }
             } else {
@@ -184,7 +185,35 @@ public class adminSearchAndDelete extends JFrame implements ActionListener{
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+            if (search.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please type something first!", "Alert", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                pst = con.prepareStatement("SELECT * FROM information WHERE inputName = ?");
+                pst.setString(1, search);
+                rs = pst.executeQuery();
+
+                DefaultTableModel df = (DefaultTableModel) table.getModel();
+                df.setRowCount(0);
+
+                if (rs.isBeforeFirst()) { 
+                    while (rs.next()) { 
+                        Vector<Object> v2 = new Vector<>();
+                        v2.add(rs.getString("inputEventId"));
+                        v2.add(rs.getString("inputName"));
+                        v2.add(rs.getString("inputDate")); 
+                        v2.add(rs.getString("inputTimeOfEvent"));
+                        v2.add(rs.getString("inputTimeDuration"));
+                        df.addRow(v2);
+                }
+            } 
+
+                tfTxt.setText("");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
     }
+}
 }
