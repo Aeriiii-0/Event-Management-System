@@ -20,8 +20,11 @@ public class userDashboard extends JFrame implements ActionListener{
  JPanel pnlTop, pnlSide;
  JButton btnMyEvent, btnScheduleEvent, btnAvailableEvents, btnAboutUs;
  JPanel pnlBdayImage,pnlWeddingImage,pnlChristeningImage;
-    
-    
+ 
+ public static void main(String[] args) {
+        new userDashboard();
+    }
+
     userDashboard (){    
     //component settings
     setSize(1000, 800);
@@ -35,8 +38,7 @@ public class userDashboard extends JFrame implements ActionListener{
     lblHeader2.setFont(new Font("Serif",Font.BOLD,30));
     lblHeader2.setForeground(new Color(	66, 3, 104));
     lblHeader2.setBounds(55, 55, 500, 40);
-    
-    
+
     JPanel pnlCenter = new JPanel();
     pnlCenter.setLayout(null);
     pnlCenter.setBounds(185, 200, 600, 150);  
@@ -49,7 +51,7 @@ public class userDashboard extends JFrame implements ActionListener{
     btnMyEvent.setFont(new Font("Serif",Font.ITALIC,18));
     btnMyEvent.setFocusable(false);
     btnMyEvent.setBackground(new Color(201, 165, 207));
-    btnMyEvent.setBounds(100, 380, 250, 50);
+    btnMyEvent.setBounds(100, 420, 250, 50);
     btnMyEvent.setForeground(new Color(66, 3, 104));
     btnMyEvent.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
     btnMyEvent.setFocusPainted(false);
@@ -60,7 +62,7 @@ public class userDashboard extends JFrame implements ActionListener{
     btnScheduleEvent.setFont(new Font("Serif",Font.ITALIC,18));
     btnScheduleEvent.setFocusable(false);
     btnScheduleEvent.setBackground(new Color(201, 165, 207));
-    btnScheduleEvent.setBounds(370, 380, 250, 50);
+    btnScheduleEvent.setBounds(370, 420, 250, 50);
     btnScheduleEvent.setForeground(new Color(66, 3, 104));
     btnScheduleEvent.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
     btnScheduleEvent.setFocusPainted(false);
@@ -71,7 +73,7 @@ public class userDashboard extends JFrame implements ActionListener{
     btnAboutUs.setFont(new Font("Serif",Font.ITALIC,18));
     btnAboutUs.setFocusable(false);
     btnAboutUs.setBackground(new Color(201, 165, 207));
-    btnAboutUs.setBounds(640, 380, 250, 50);
+    btnAboutUs.setBounds(640, 420, 250, 50);
     btnAboutUs.setForeground(new Color(66, 3, 104));
     btnAboutUs.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
     btnAboutUs.setFocusPainted(false);
@@ -89,6 +91,7 @@ public class userDashboard extends JFrame implements ActionListener{
     setVisible(true);
     
 }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -108,5 +111,5 @@ public class userDashboard extends JFrame implements ActionListener{
      else if(e.getSource()==btnAboutUs){
          //insert lang label na naghahandle tayo events ganon ganon. inverted triangle.
      }
-    }
+    } 
 }
