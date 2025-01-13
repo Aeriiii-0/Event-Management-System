@@ -1,12 +1,22 @@
 package com.mycompany.eventmanagementsystemmain;
 
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 
+/**
+ *
+ * @author USER
+ */
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
@@ -15,9 +25,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Timer;
-import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 
 public class adminAddEvent extends JFrame implements ActionListener{
@@ -34,16 +43,15 @@ public class adminAddEvent extends JFrame implements ActionListener{
     String[] columnNames = {"Event Name", "Name", "Date", "Event Duration", "Time of Event"}; 
     JScrollPane sclPane;
     DefaultTableModel tblModel;
+    List<String> deletedData;
     PriorityQueue<Event> queue;
     JTable eventTable;
-    List<String> confirmedEvents;
-    
-   
     
     adminAddEvent(){
-         confirmedEvents = new ArrayList<>();
-         queue = new PriorityQueue<>(new EventComparator());
-        
+  
+        queue = new PriorityQueue<>(new EventComparator());
+        deletedData = new ArrayList<>();
+
         //component settings
         setSize(1000, 800);
         setTitle("Event Venture");
@@ -239,8 +247,9 @@ public class adminAddEvent extends JFrame implements ActionListener{
                 }
             }
         });
-
-        readDataFromFile("userdata.txt");
+        
+        
+        readDataFromFile("userData.txt");
         
         //addition of all the panels, ensuring its components' visibility.      
         add(pnlCenter);
@@ -263,14 +272,15 @@ public class adminAddEvent extends JFrame implements ActionListener{
             
         }else if(e.getSource()==btnRefreshTable){
            JOptionPane.showMessageDialog(null, "Refreshing Table...", "Refreshing", JOptionPane.INFORMATION_MESSAGE);
-            readDataFromFile("userdata.txt");
+            readDataFromFile("userData.txt");
             refreshTable();
         }  else if(e.getSource()==btnBack){
-         //new adminFrameGeneral(); 
-        
+         new adminDashboard(); 
+         dispose();
     }
         else if(e.getSource()==btnViewDB){
-          //new adminUpdateAndDelete();
+          new adminUpdateAndDelete();
+          dispose();
         }
     }
        //code for refreshing the data in the table
@@ -278,19 +288,14 @@ public class adminAddEvent extends JFrame implements ActionListener{
     tblModel.setRowCount(0); //Clear the table
     PriorityQueue<Event> tempQueue = new PriorityQueue<>(queue); // Temporary queue for sorted events
     while (!tempQueue.isEmpty()) {
-            Event event = tempQueue.poll();  
-            //identifier for the event that is already added
-            String eventIdentifier = event.getEventName() + "|" + event.getDate() + "|" + event.getTimeOfEvent() + "|" + event.getName() + "|" +event.getDuration();
-            //display the data of events that is not added into DB
-            if (!confirmedEvents.contains(eventIdentifier)) {
-                tblModel.addRow(new Object[]{
-                        event.getEventName(),
-                        event.getName(),
-                        event.getDate(),
-                        event.getDuration(),
-                        event.getTimeOfEvent()
-                });
-            }
+        Event event = tempQueue.poll();
+        tblModel.addRow(new Object[]{
+                event.getEventName(),
+                event.getName(),
+                event.getDate(),
+                event.getDuration(),
+                event.getTimeOfEvent()
+        });
     }
 }
     //code for reading the data from the textfile
@@ -300,20 +305,15 @@ public class adminAddEvent extends JFrame implements ActionListener{
             queue.clear(); // Clear the queue to avoid duplicate entries
             while ((line = br.readLine()) != null) {
                 String[] eventDetails = line.split(","); //seperator of the data in the textfile
-                if (eventDetails.length == 6) {
+                if (eventDetails.length == 5) {
                     String eventName = eventDetails[0].trim();
                     String name = eventDetails[1].trim();
                     String date = eventDetails[2].trim();
                     String duration = eventDetails[3].trim();
                     String timeOfEvent = eventDetails[4].trim();
-                    String status = eventDetails[5].trim();
 
                     // Add event to the queue
                     queue.add(new Event(eventName, name, date, duration, timeOfEvent));
-                    
-                    if (status.equals("Event Confirmed")) {
-                    confirmedEvents.add(eventName + "|" + date + "|" + timeOfEvent + "|" + name + "|" + duration);
-                    }
                 }
             }
             refreshTable(); // Populate the table after loading
@@ -322,9 +322,7 @@ public class adminAddEvent extends JFrame implements ActionListener{
             JOptionPane.showMessageDialog(this, "Error reading data from file.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    
-  
+
     //add events to event table in database.
     public void addEventToDatabase() throws SQLException {
         
@@ -365,38 +363,66 @@ public class adminAddEvent extends JFrame implements ActionListener{
                         throw new SQLException("Adding event failed, no ID available obtained.");
                     }
                 }
-             
-                int selectedRow = eventTable.getSelectedRow(); // Get the selected row index.
-                if (selectedRow >= 0) {
-                String eventNameToRemove = (String) tblModel.getValueAt(selectedRow, 0); // Event name.
-                queue.removeIf(e -> e.getEventName().equals(eventNameToRemove)); // Remove from queue.
-                tblModel.removeRow(selectedRow); // Remove from table model.
+           
+        int selectedRow = eventTable.getSelectedRow(); // Get the selected row index.
+         if (selectedRow >= 0) {
+          String eventNameToRemove = (String) tblModel.getValueAt(selectedRow, 0); // Event name.
+          queue.removeIf(e -> e.getEventName().equals(eventNameToRemove)); // Remove from queue.
+          tblModel.removeRow(selectedRow); // Remove from table model.
                 
-                    for (Event event : queue) {
-                    if (event.getEventName().equals(inputEventId)
-                            && event.getName().equals(inputName)
-                            && event.getDate().equals(inputDate)
-                            && event.getDuration().equals(inputTimeDuration)
-                            && event.getTimeOfEvent().equals(inputTimeOfEvent)) {
-                        queue.remove(event); // Remove the event from the queue
-                        break;
-                    }
-                }
-                //characteristics of data is need to check
-                String eventIdentifier = inputEventId + "|" + inputDate + "|" + inputTimeOfEvent + "|" + inputName + "|" + inputTimeDuration;
-                confirmedEvents.add(eventIdentifier);
-            }
-            
-                JOptionPane.showMessageDialog(null, "Event Added to database. View Database ");
-                txaNotif.setText("Successfully added to database. Event scheduled.");
-
+         for (Event event : queue) {
+          if (event.getEventName().equals(inputEventId)
+          && event.getName().equals(inputName)
+          && event.getDate().equals(inputDate)
+          && event.getDuration().equals(inputTimeDuration)
+          && event.getTimeOfEvent().equals(inputTimeOfEvent)) {
+          queue.remove(event); // Remove the event from the queue
+          break;  
+      }
+    }
+          removeAddedData(inputEventId, inputName, inputDate, inputTimeDuration, inputTimeOfEvent);
+          txaNotif.setText("Successfully added to database. Event scheduled.");
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Input Error: " + e.getMessage());
+}      
+}
+ }
+    private void removeAddedData(String eventId, String name, String date, String duration, String time) {
+    
+        try {
+            try (BufferedReader read = new BufferedReader(new FileReader("userData.txt"))) {
+            String line;
+            while ((line = read.readLine()) != null) {
+                String[] eventDetails = line.split(",");
+                // Check if this event matches the one to remove
+                if (eventDetails.length == 5 &&
+                    eventDetails[0].trim().equals(eventId) &&
+                    eventDetails[1].trim().equals(name) &&
+                    eventDetails[2].trim().equals(date) &&
+                    eventDetails[3].trim().equals(duration) &&
+                    eventDetails[4].trim().equals(time)) {
+                    continue; // Skip this line (remove it)
+                }
+                deletedData.add(line); // Keep all other events
+            }
+        }
+
+        // Write the updated events back to the file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userData.txt"))) {
+            for (String event : deletedData) {
+                writer.write(event);
+                writer.newLine();
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error updating file.", "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
-    
 
+    
+ 
      //method in-charge for the start and end time of the operations. 
   private void startTimer() {
     try {
@@ -421,6 +447,8 @@ public class adminAddEvent extends JFrame implements ActionListener{
         eventStartTimer.setRepeats(false); // Ensure it only triggers once
         eventStartTimer.start();
         
+        //notification of approval.
+        JOptionPane.showMessageDialog(null, "Event Added to database.");
         JOptionPane.showMessageDialog(null, "Event scheduled successfully for " + dateFormat.format(eventDateTime));
         
         //reset all the fields.
@@ -447,7 +475,8 @@ private void startRegistrationWindow() {
     // Timer for the registration period, based on the event duration. Once done, the system exits. Disabling guests to register.
     Timer registrationTimer = new Timer(durationInMinutes * 60000, e -> {
         JOptionPane.showMessageDialog(null, "The event is over, thanks for staying with us!");
-       //new PostEventAnalyticss();
+       new PostEventAnalytics();
+       dispose();
      
     });
     
@@ -455,7 +484,7 @@ private void startRegistrationWindow() {
     registrationTimer.start();
     dispose();
     
-   //new invitationToRegistration();
+   new invitationToRegistration();
 }
 //method for converting hours to minutes.
 private int getDurationInMinutes(String duration) {
@@ -518,9 +547,7 @@ class Event {
         return timeOfEvent;
     }
     } 
-public static void main (String[] args){
-    new adminAddEvent();
-}
-}  
-
-
+    public static void main(String[] args) {
+        new adminAddEvent();
+    }
+} 
