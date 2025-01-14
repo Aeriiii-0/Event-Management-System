@@ -24,6 +24,7 @@ import java.sql.*;
   //component settings
     setSize(1000, 800);
     setLayout(null);
+    setResizable(false);
     setLocationRelativeTo(null);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     getContentPane().setBackground(new Color(213, 182, 238));
