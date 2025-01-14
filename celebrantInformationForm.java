@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,7 +19,7 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
     JPanel pnlInfoForm;
     JTextField tfName, tfDate, tfEvent;
     JButton btnRequest, btnBack;
-    JComboBox<String> cmbDuration, cmbEventName;
+    JComboBox cmbDuration, cmbEventName;
     String[] eventDuration = {"Select Option", "2 hours", "3 hours and half hours", "5 hours"};
     String[] eventNames = {"Select an option", "Birthday", "Wedding", "Christening"};
 
@@ -53,6 +50,7 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
         lblEventName.setBounds(120, 100, 150, 160);
         add(lblEventName);
 
+        //eventname
         cmbEventName = new JComboBox<>(eventNames);
         cmbEventName.setBounds(250, 160, 600, 40);
         cmbEventName.setBackground(new Color(190, 140, 229));
@@ -61,6 +59,7 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
         cmbEventName.setForeground(new Color(66, 3, 104));
         add(cmbEventName);
 
+        //name
         lblName = new JLabel("Name: ");
         lblName.setFont(new Font("Serif", Font.BOLD, 20));
         lblName.setForeground(new Color(66, 3, 104));
@@ -76,6 +75,7 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
         tfName.setText("");
         add(tfName);
 
+        //date
         lblDate = new JLabel("Date (yyyy-MM-dd): ");
         lblDate.setFont(new Font("Serif", Font.BOLD, 20));
         lblDate.setForeground(new Color(66, 3, 104));
@@ -91,6 +91,7 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
         tfDate.setText("");
         add(tfDate);
 
+        //time duration 
         lblDuration = new JLabel("Time Duration: ");
         lblDuration.setFont(new Font("Serif", Font.BOLD, 20));
         lblDuration.setForeground(new Color(66, 3, 104));
@@ -105,6 +106,7 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
         cmbDuration.setForeground(new Color(66, 3, 104));
         add(cmbDuration);
 
+        //time of event
         lblEvent = new JLabel("Time of Event:   ");
         lblEvent.setFont(new Font("Serif", Font.BOLD, 20));
         lblEvent.setForeground(new Color(66, 3, 104));
@@ -120,6 +122,7 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
         tfEvent.setText("");
         add(tfEvent);
 
+        //button for request schedule
         btnRequest = new JButton("REQUEST SCHEDULE");
         btnRequest.setBounds(390, 540, 220, 40);
         btnRequest.setFont(new Font("Serif", Font.BOLD, 15));
@@ -153,8 +156,9 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
             String timeDuration = (String) cmbDuration.getSelectedItem();
 
             if (!name.isEmpty() && !date.isEmpty() && !eventTime.isEmpty() &&
-                    !timeDuration.equals("Select Option") && !eventName.equals("Select an option")) {
+                    !timeDuration.equals("Select Option") && !eventName.equals("Select Option")) {
 
+                // Validate date and time
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 try {
                     String fullDateTime = date + " " + eventTime;
@@ -170,56 +174,20 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
                     return;
                 }
 
-                if (isEventTimeTaken(date, eventTime)) {
-                    JOptionPane.showMessageDialog(null, "The selected date and time is already taken. Please choose another.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                try (PrintWriter writer = new PrintWriter(new FileWriter("userData.txt", true))) {
-                    writer.println(eventName + ", " + name + ", " + date + ", " + timeDuration + ", " + eventTime);
-                    JOptionPane.showMessageDialog(null, "Schedule requested successfully!");
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Failed to save the schedule. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-                int conf = JOptionPane.showConfirmDialog(null, "Do you want to exit?");
+                // If everything is valid, proceed with the scheduling request
+                int conf = JOptionPane.showConfirmDialog(null, "Do you want to submit the event?");
                 if (conf == JOptionPane.YES_OPTION) {
-                    JOptionPane.showMessageDialog(null, "See you soon !! >.<");
-                    System.exit(0);
-                } else if (conf == JOptionPane.NO_OPTION) {
-                    new userDashboard();
-                    dispose();
+                    JOptionPane.showMessageDialog(null, "Event scheduled successfully!");
+                   
+                    
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Please answer all required fields", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else if (e.getSource() == btnBack) {
-            new userDashboard();
+           
             dispose();
         }
     }
-
-    private boolean isEventTimeTaken(String date, String time) {
-        String url = "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL";
-        String user = "root";
-        String password = "052505";
-
-        String query = "SELECT COUNT(*) FROM eventmanagement WHERE event_date = ? AND event_time = ?";
-
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, date);
-            stmt.setString(2, time);
-
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                return count > 0;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
+    
 }
