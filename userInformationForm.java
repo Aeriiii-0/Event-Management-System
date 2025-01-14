@@ -13,212 +13,215 @@ import java.util.LinkedList;
 import javax.swing.*;
 
 class Guest {
-    String name;
-    String email;
-    String eventId;
-    String feedback;
+String name;
+String email;
+String eventId;
+String feedback;
 
-    public Guest(String name, String email, String eventId, String feedback) {
-        this.name = name;
-        this.email = email;
-        this.eventId = eventId;
-        this.feedback = feedback;
-    }
-  @Override
-    public String toString() {
-        return "Name: " + name + ", Email: " + email + ", Event ID: " + eventId + ", Feedback: " + feedback;
-    }
+public Guest(String name, String email, String eventId, String feedback) {
+this.name = name;
+this.email = email;
+this.eventId = eventId;
+this.feedback = feedback;
+ }
+
+@Override
+public String toString() {
+    return "Name: " + name + ", Email: " + email + ", Event ID: " + eventId + ", Feedback: " + feedback;
+ }
 }
 
 public class userInformationForm extends JFrame implements ActionListener{
     
-   JLabel lblUserName, lblEmail, lblEventId, lblFeedback, lblRegisterCount, lblRegisterCounter, lblHeader;
-   JButton  btnSubmitForm;
-   JTextField tfUserName, tfEmail, tfEventId;
-   JTextArea txaFeedback;
-   JPanel pnlUp, pnlDown, pnlCenter;
-   int attendeeCount=0;
-   LinkedList<Guest> guestList = new LinkedList<>();
- 
+JLabel lblHeader, lblUserName, lblEmail, lblEventId, lblFeedback, lblRegisterCount, lblRegisterCounter;
+JButton  btnSubmitForm;
+JTextField tfUserName, tfEmail, tfEventId;
+JTextArea txaFeedback;
+JPanel pnlUp, pnlDown;
+int attendeeCount=0;
+LinkedList<Guest> guestList = new LinkedList<>();
+String attendeeName, attendeeEmail, eventId, attendeeFeedback;
+
  userInformationForm(){
      
     //component settings
-        setSize(1000,800);
-        setLayout(null);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(new Color(213, 182, 238));
-        
-        
-        lblHeader = new JLabel("ATTENDEE INFORMATION FORM");
-        lblHeader.setFont(new Font("Serif",Font.BOLD,25));
-        lblHeader.setForeground(Color.BLACK);
-        lblHeader.setBounds(435, 40, 800, 40);
-        add(lblHeader);
-        
-        lblUserName = new JLabel("Name:");
-        lblUserName.setBounds(150, 200, 100, 30);
-        lblUserName.setForeground(Color.BLACK);
-        lblUserName.setFont(new Font("Arial", Font.BOLD, 23));
-        add(lblUserName);
-     
-        lblEmail = new JLabel("Email:");
-        lblEmail.setBounds(150, 270, 120, 30);
-        lblEmail.setForeground(Color.BLACK);
-        lblEmail.setFont(new Font("Arial", Font.BOLD, 23));
-        add(lblEmail);
-        
-        lblEventId = new JLabel("Event ID:");
-        lblEventId.setBounds(150, 340, 120, 30);
-        lblEventId.setForeground(Color.BLACK);
-        lblEventId.setFont(new Font("Arial", Font.BOLD, 23));
-        add(lblEventId);
-        
-        lblFeedback = new JLabel("Feedback:");
-        lblFeedback.setBounds(150, 430, 160, 30);
-        lblFeedback.setForeground(Color.BLACK);
-        lblFeedback.setFont(new Font("Arial", Font.BOLD, 23));
-        add(lblFeedback);
-                     
-        btnSubmitForm = new JButton("SUBMIT FORM");
-        btnSubmitForm.setBorder(null);
-        btnSubmitForm.setOpaque(true);
-        btnSubmitForm.setFocusable(true);
-        btnSubmitForm.setBounds(535, 660, 200, 40);
-        btnSubmitForm.setFont(new Font("Arial", Font.BOLD, 17));
-        btnSubmitForm.setBackground(new Color(144, 5, 229));
-        btnSubmitForm.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        add(btnSubmitForm);
-        btnSubmitForm.addActionListener(this);
-        
-        
-        tfUserName = new JTextField();    
-        tfUserName.setBounds(400, 200, 480, 35);
-        tfUserName.setBackground(new Color(190, 140, 229));
-        tfUserName.setForeground(new Color(66, 3, 104));
-        tfUserName.setFont(new Font("Serif",Font.BOLD,17));
-        tfUserName.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-            add(tfUserName);
+    setSize(1000,800);
+    setLayout(null);
+    setLocationRelativeTo(null);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    getContentPane().setBackground(new Color(213, 182, 238));
 
-        
-       tfEmail = new JTextField();        
-       tfEmail.setBounds(400, 270, 480, 35);
-       tfEmail.setBackground(new Color(190,140,229));
-       tfEmail.setBackground(new Color(190, 140, 229));
-       tfEmail.setForeground(new Color(66, 3, 104));
-       tfEmail.setFont(new Font("Serif",Font.BOLD,17));
-       tfEmail.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));            
-       add(tfEmail);
-        
-        tfEventId = new JTextField();    
-        tfEventId.setBorder(null);
-        tfEventId.setOpaque(true);
-        tfEventId.setFocusable(true);
-        tfEventId.setForeground(Color.BLACK);
-        tfEventId.setBounds(400, 340, 480, 35);
-        tfEventId.setBackground(new Color(190,140,229));
-        tfEventId.setFont(new Font("Serif",Font.BOLD,17));
-        tfEventId.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        add(tfEventId);
-        
-        txaFeedback = new JTextArea();
-        txaFeedback.setForeground(Color.BLACK);
-        txaFeedback.setBounds(400, 430, 480, 200);
-        txaFeedback.setBackground(new Color(190,140,229));
-        txaFeedback.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        txaFeedback.setFont(new Font("Serif",Font.BOLD,17));
-        add(txaFeedback);
-        
-        
-        pnlUp = new JPanel();
-        pnlUp.setForeground(Color.WHITE);
-        pnlUp.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        pnlUp.setBackground(new Color(190,140,229));
-        pnlUp.setBounds(0, 0, 1000, 120);
-        add(pnlUp);
-        
-        lblRegisterCount=new JLabel("Guests Registered: ");
-        lblRegisterCount.setBounds(30, 700, 400, 30);
-        lblRegisterCount.setForeground(new Color(66, 3, 104));
-        lblRegisterCount.setFont(new Font("Arial", Font.BOLD, 23));
-        pnlUp.add(lblRegisterCount);
-        
-        lblRegisterCounter=new JLabel("  0");
-        lblRegisterCounter.setBounds(240, 700, 250, 30);
-        lblRegisterCounter.setForeground(new Color(66, 3, 104));
-        lblRegisterCounter.setFont(new Font("Arial", Font.BOLD, 23));
-        pnlUp.add(lblRegisterCounter);
+    lblUserName = new JLabel("NAME:");
+    lblUserName.setBounds(100, 200, 100, 30);
+    lblUserName.setForeground(new Color(66, 3, 104));
+    lblUserName.setFont(new Font("Arial",Font.BOLD,18));
+    add(lblUserName);
 
-        pnlDown = new JPanel();
-        pnlDown.setBounds(0, 0, 300, 800);
-        pnlDown.setForeground(Color.WHITE);
-        pnlDown.setBackground(new Color(190,140,229));
-        pnlDown.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        add(pnlDown);
+    lblEmail = new JLabel("EMAIL:");
+    lblEmail.setBounds(100, 270, 100, 30);
+    lblEmail.setForeground(new Color(66, 3, 104));
+    lblEmail.setFont(new Font("Arial",Font.BOLD,18));
+    add(lblEmail);
+
+    lblEventId = new JLabel("EVENT I.D:");
+    lblEventId.setBounds(100, 340, 100, 30);
+    lblEventId.setForeground(new Color(66, 3, 104));
+    lblEventId.setFont(new Font("Arial",Font.BOLD,18));
+    add(lblEventId);
+
+    lblFeedback = new JLabel("FEEDBACK:");
+    lblFeedback.setBounds(100, 430, 160, 30);
+    lblFeedback.setForeground(new Color(66, 3, 104));
+    lblFeedback.setFont(new Font("Arial",Font.BOLD,18));
+    add(lblFeedback);
+
+    btnSubmitForm = new JButton("SUBMIT FORM");
+    btnSubmitForm.setBounds(540, 660, 200, 35);
+    btnSubmitForm.setFont(new Font("Arial",Font.BOLD,13));
+    btnSubmitForm.setForeground(new Color(66, 3, 104));
+    btnSubmitForm.setContentAreaFilled(false);  
+    btnSubmitForm.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    btnSubmitForm.setFocusPainted(false);
+    add(btnSubmitForm);
+    btnSubmitForm.addActionListener(this);
+
+
+    tfUserName = new JTextField();
+    tfUserName.setForeground(new Color(66, 3, 104));
+    tfUserName.setBounds(400, 200, 480, 35);
+    tfUserName.setBackground(new Color(190,140,229));
+    tfUserName.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    tfUserName.setFont(new Font("Serif",Font.BOLD,17));
+    add(tfUserName);
+
+
+    tfEmail = new JTextField();
+    tfEmail.setForeground(new Color(66, 3, 104));
+    tfEmail.setBounds(400, 270, 480, 35);
+    tfEmail.setBackground(new Color(190,140,229));
+    tfEmail.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));  
+    tfEmail.setFont(new Font("Serif",Font.BOLD,17));
+    add(tfEmail);
+
+    tfEventId = new JTextField();       
+    tfEventId.setForeground(new Color(66, 3, 104));
+    tfEventId.setBounds(400, 340, 480, 35);
+    tfEventId.setBackground(new Color(190,140,229));
+    tfEventId.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    tfEventId.setFont(new Font("Serif",Font.BOLD,17));
+    add(tfEventId);
+
+    txaFeedback = new JTextArea();
+    txaFeedback.setForeground(new Color(66, 3, 104));
+    txaFeedback.setBounds(400, 430, 480, 200);
+    txaFeedback.setBackground(new Color(190,140,229));
+    txaFeedback.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    txaFeedback.setFont(new Font("Serif",Font.BOLD,17));
+    add(txaFeedback);
+
+
+    pnlUp = new JPanel();
+    pnlUp.setBackground(new Color(190,140,229));
+    pnlUp.setBounds(301, -2, 720, 120);
+    pnlUp.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    pnlUp.setLayout(null);
+    add(pnlUp);
+    
         
-        pnlCenter = new JPanel();
-            pnlCenter.setLayout(null);
-            pnlCenter.setBounds(0, 109, 1000, 598);
-            pnlCenter.setBackground(new Color(213, 182, 238));
-            add(pnlCenter);
-            
-          setVisible(true);
+    lblHeader = new JLabel("ATTENDEE INFORMATION FORM");
+    lblHeader.setFont(new Font("Serif",Font.BOLD,25));
+    lblHeader.setForeground(new Color(66, 3, 104));
+    lblHeader.setBounds(115, 40, 500, 40);
+    pnlUp.add(lblHeader);
+
+    lblRegisterCount=new JLabel("Guests Registered:");
+    lblRegisterCount.setBounds(20, 80, 400, 30);
+    lblRegisterCount.setForeground(new Color(66, 3, 104));
+    lblRegisterCount.setFont(new Font("Serif",Font.BOLD,18));
+   
+
+    lblRegisterCounter=new JLabel("0");
+    lblRegisterCounter.setBounds(185, 80, 400, 30);
+    lblRegisterCounter.setForeground(new Color(66, 3, 104));
+    lblRegisterCounter.setFont(new Font("Serif",Font.BOLD,18)); pnlUp.add(lblRegisterCounter);
+
+    pnlDown = new JPanel();
+    pnlDown.setLayout(null);
+    pnlDown.setBounds(-2, -2, 305, 1000);
+    pnlDown.setForeground(new Color(66, 3, 104));
+    pnlDown.setBackground(new Color(190,140,229));
+    pnlDown.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    add(pnlDown);
+    pnlDown.add(lblRegisterCount);
+    pnlDown.add(lblRegisterCounter);
+
+    setVisible(true);
         
     }
 
- 
- 
- 
-    @Override
-   public void actionPerformed(ActionEvent e) {
-       
-        if (e.getSource() == btnSubmitForm) {
-           //validating fields if they're field with required data.
-        if(!tfUserName.getText().isEmpty()|| !tfEmail.getText().isEmpty() || !tfEventId.getText().isEmpty()|| !txaFeedback.getText().isEmpty()){
-            
-            Guest guest = new Guest(
-                    tfUserName.getText(),
-                    tfEmail.getText(),
-                    tfEventId.getText(),
-                    txaFeedback.getText()
-                );
-                guestList.add(guest);
-         
-          
-            addAttendeeToDatabase();
-            JOptionPane.showMessageDialog(null, "Successful Registration!");
-          
-          int askUser=JOptionPane.showConfirmDialog(null, "Do you want to submit another form?");
-           if(askUser==JOptionPane.YES_OPTION){
-             updateRegisterCountFromLastId();
-               //clear all the texts within the fields.
-               tfEmail.setText(" ");
-               tfEventId.setText(" ");
-               tfUserName.setText(" ");
-               txaFeedback.setText(" ");
-           }}
-            } else {
-                JOptionPane.showMessageDialog(this, "Please fill in all fields.");
-            }
-  }
+@Override
+public void actionPerformed(ActionEvent e) {
+    if (e.getSource() == btnSubmitForm) {
+        // Collecting attendee input.
+        attendeeName = tfUserName.getText().trim();
+        attendeeEmail = tfEmail.getText().trim();
+        eventId = tfEventId.getText().trim();
+        attendeeFeedback = txaFeedback.getText().trim();
 
-    private void addAttendeeToDatabase() {
-       
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/eventmanagement", "root", "1234")) {
-            String query = "INSERT INTO attendee (name, email, eventId, feedback) VALUES (?,?,?,?)";
-            try (PreparedStatement stmt = connection.prepareStatement(query)) {
-                for (Guest guest : guestList) {
-                    stmt.setString(1, guest.name);
-                    stmt.setString(2, guest.email);
-                    stmt.setString(3, guest.eventId);
-                    stmt.setString(4, guest.feedback);
-                    stmt.addBatch();
-                }
-                stmt.executeBatch();
-                guestList.clear();
+        if (!attendeeEmail.contains("@gmail.com")) {
+            JOptionPane.showMessageDialog(this, """
+                                                All fields must be filled and Email must contain 'gmail.com'.
+                                                Please enter a valid email address.""");
+            return;
+        }
+
+        // Check if all fields are filled with required data.
+        if (attendeeName.isEmpty() || attendeeEmail.isEmpty() || eventId.isEmpty() || attendeeFeedback.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled. Please complete the form.");
+            return;
+        }
+
+        // Create a new guest and add to the list.
+        Guest guest = new Guest(attendeeName, attendeeEmail, eventId, attendeeFeedback);
+        guestList.add(guest);
+
+        // Add attendee data to the database.
+        addAttendeeToDatabase();
+
+        // Confirm if the user wants to submit another form.
+        int askUser = JOptionPane.showConfirmDialog(null, "Do you want to submit another form?");
+        if (askUser == JOptionPane.YES_OPTION) {
+            setFields(); // Clear the fields for a new form.
+        } else if (askUser == JOptionPane.NO_OPTION) {
+            dispose(); // Close the current form.
+        } else {
+            setFields(); // Default action for cancel.
+        }
+    }
+}
+
+private void addAttendeeToDatabase() {
+
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/eventmanagement", "root", "1234")) {
+        String query = "INSERT INTO attendee (name, email, eventId, feedback) VALUES (?,?,?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            for (Guest guest : guestList) {
+            stmt.setString(1, guest.name);
+            stmt.setString(2, guest.email);
+            stmt.setString(3, guest.eventId);
+            stmt.setString(4, guest.feedback);
+            stmt.addBatch();
             }
+            stmt.executeBatch();
+            guestList.clear();
+            JOptionPane.showMessageDialog(null, "Successful Registration!");
+            setFields();
+        }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Input Error: " + e.getMessage());
+            setFields();
+            return;
+            
         }
     }
     private void updateRegisterCountFromLastId() {
@@ -237,10 +240,18 @@ public class userInformationForm extends JFrame implements ActionListener{
         }
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(this, "Error fetching last attendee ID: " + e.getMessage());
+       }
     }
+    
+    private void setFields(){
+    tfEmail.setText("");
+    tfEventId.setText("");
+    tfUserName.setText("");
+    txaFeedback.setText("");
     }
-
-           
-    } 
+    public static void main(String[] args) {
+        new userInformationForm();
+    }
+} 
         
     
