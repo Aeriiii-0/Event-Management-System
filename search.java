@@ -95,7 +95,7 @@ public class search extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSearch) {
             String searchQuery = jtfSearch.getText().trim(); // getting data
-            linearSearching(searchQuery); // code for binary search
+            linearSearching(searchQuery); // code for linear search
             jtfSearch.setText(""); // clear the textfield after searching
         }
 
