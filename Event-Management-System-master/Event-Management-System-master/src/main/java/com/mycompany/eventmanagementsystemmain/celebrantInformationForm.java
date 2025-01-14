@@ -35,6 +35,7 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
     setLocationRelativeTo(null);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(null);
+    setResizable(false);
     getContentPane().setBackground(new Color(213, 182, 238));
     
     lblHeader = new JLabel("CELEBRANT INFORMATION FORM");
