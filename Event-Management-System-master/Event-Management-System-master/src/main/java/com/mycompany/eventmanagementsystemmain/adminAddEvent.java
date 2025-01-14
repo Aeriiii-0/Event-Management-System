@@ -14,7 +14,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
@@ -23,6 +25,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Timer;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -40,15 +43,15 @@ public class adminAddEvent extends JFrame implements ActionListener{
     String[] columnNames = {"Event Name", "Name", "Date", "Event Duration", "Time of Event"}; 
     JScrollPane sclPane;
     DefaultTableModel tblModel;
+    List<String> deletedData;
     PriorityQueue<Event> queue;
     JTable eventTable;
     
-   
-    
     adminAddEvent(){
   
-         queue = new PriorityQueue<>(new EventComparator());
-        
+        queue = new PriorityQueue<>(new EventComparator());
+        deletedData = new ArrayList<>();
+
         //component settings
         setSize(1000, 800);
         setTitle("Event Venture");
@@ -74,13 +77,13 @@ public class adminAddEvent extends JFrame implements ActionListener{
         txaNotif.setWrapStyleWord(true);
         txaNotif.setEditable(false);
         pnlNorth.add(txaNotif);
-//center panel
+        //center panel
         pnlCenter = new JPanel();
         pnlCenter.setLayout(null);
         pnlCenter.setBounds(0, 109, 1000, 598);
         pnlCenter.setBackground(new Color(213, 182, 238));
         
-//labels setting. added in center panel.
+       //labels setting. added in center panel.
         lblQueue = new JLabel("Guests in Queue:");
         lblQueue.setFont(new Font("Arial", Font.BOLD, 15));
         lblQueue.setBounds(25, 10, 400, 20);
@@ -224,23 +227,24 @@ public class adminAddEvent extends JFrame implements ActionListener{
         add(lblHeader);
         
         eventTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int selectedRow = eventTable.getSelectedRow(); // Get the row that was clicked
+    
+    public void mouseClicked(java.awt.event.MouseEvent evt) {
+    int selectedRow = eventTable.getSelectedRow(); // Get the row that was clicked
 
-                // Get the data from each column of the selected row
-                if (selectedRow != -1) {
-                    String eventName = tblModel.getValueAt(selectedRow, 0).toString(); 
-                    String name = tblModel.getValueAt(selectedRow, 1).toString();    
-                    String date = tblModel.getValueAt(selectedRow, 2).toString();   
-                    String duration = tblModel.getValueAt(selectedRow, 3).toString(); 
-                    String timeOfEvent = tblModel.getValueAt(selectedRow, 4).toString(); 
+    // Get the data from each column of the selected row
+    if (selectedRow != -1) {
+        String eventName = tblModel.getValueAt(selectedRow, 0).toString(); 
+        String name = tblModel.getValueAt(selectedRow, 1).toString();    
+        String date = tblModel.getValueAt(selectedRow, 2).toString();   
+        String duration = tblModel.getValueAt(selectedRow, 3).toString(); 
+        String timeOfEvent = tblModel.getValueAt(selectedRow, 4).toString(); 
 
-                    // Set the retrieved data from the table to the textfields.
-                    tfName.setText(name);             
-                    tfDate.setText(date);            
-                    tfTimeEvent.setText(timeOfEvent);
-                    cmbEventName.setSelectedItem(eventName);
-                    cmbDuration.setSelectedItem(duration);  
+        // Set the retrieved data from the table to the textfields.
+        tfName.setText(name);             
+        tfDate.setText(date);            
+        tfTimeEvent.setText(timeOfEvent);
+        cmbEventName.setSelectedItem(eventName);
+        cmbDuration.setSelectedItem(duration);  
                 }
             }
         });
@@ -287,11 +291,11 @@ public class adminAddEvent extends JFrame implements ActionListener{
     while (!tempQueue.isEmpty()) {
         Event event = tempQueue.poll();
         tblModel.addRow(new Object[]{
-                event.getEventName(),
-                event.getName(),
-                event.getDate(),
-                event.getDuration(),
-                event.getTimeOfEvent()
+        event.getEventName(),
+        event.getName(),
+        event.getDate(),
+        event.getDuration(),
+        event.getTimeOfEvent()
         });
     }
 }
@@ -319,9 +323,7 @@ public class adminAddEvent extends JFrame implements ActionListener{
             JOptionPane.showMessageDialog(this, "Error reading data from file.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    
-  
+
     //add events to event table in database.
     public void addEventToDatabase() throws SQLException {
         
@@ -339,11 +341,9 @@ public class adminAddEvent extends JFrame implements ActionListener{
             txaNotif.setText("Please fill all the required fields");
             return;
         }
-        
-       
-        
+
         //Database connections and inserting queries. Along with the prepared statement and its parameters.
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/eventmanagement", "root", "1234")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/eventmanagement", "root", "1234")) {
             String query = "INSERT INTO event (eventName, name, date, time, duration, status) VALUES (?,?,?,?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
                 stmt.setString(1, inputEventId);
@@ -355,7 +355,7 @@ public class adminAddEvent extends JFrame implements ActionListener{
 
                 stmt.executeUpdate(); //execution of the process.
          
-        //method for auto-incrementation in database. Arranged regardless of the type of event.
+        //method for auto-incrementation ID in database. Arranged regardless of the type of event.
              try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         int eventId = generatedKeys.getInt(1);
@@ -364,33 +364,62 @@ public class adminAddEvent extends JFrame implements ActionListener{
                         throw new SQLException("Adding event failed, no ID available obtained.");
                     }
                 }
-           
-        int selectedRow = eventTable.getSelectedRow(); // Get the selected row index.
+    //removing user data from textfile if they're added to database     
+        int selectedRow = eventTable.getSelectedRow(); 
          if (selectedRow >= 0) {
-          String eventNameToRemove = (String) tblModel.getValueAt(selectedRow, 0); // Event name.
-          queue.removeIf(e -> e.getEventName().equals(eventNameToRemove)); // Remove from queue.
-          tblModel.removeRow(selectedRow); // Remove from table model.
+          String eventNameToRemove = (String) tblModel.getValueAt(selectedRow, 0); 
+          queue.removeIf(e -> e.getEventName().equals(eventNameToRemove)); 
+          tblModel.removeRow(selectedRow); 
                 
          for (Event event : queue) {
-          if (event.getEventName().equals(inputEventId)
-          && event.getName().equals(inputName)
-          && event.getDate().equals(inputDate)
-          && event.getDuration().equals(inputTimeDuration)
-          && event.getTimeOfEvent().equals(inputTimeOfEvent)) {
+          if (event.getEventName().equals(inputEventId) && event.getName().equals(inputName)  && event.getDate().equals(inputDate) && event.getDuration().equals(inputTimeDuration) && event.getTimeOfEvent().equals(inputTimeOfEvent)) {
           queue.remove(event); // Remove the event from the queue
-          break;
+          break;  
       }
-    }        
-                txaNotif.setText("Successfully added to database. Event scheduled.");
+    }
+          removeAddedData(inputEventId, inputName, inputDate, inputTimeDuration, inputTimeOfEvent);
+          txaNotif.setText("Successfully added to database. Event scheduled.");
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Input Error: " + e.getMessage());
+}      
+}
+ }
+    private void removeAddedData(String eventId, String name, String date, String duration, String time) {
+    
+        try {
+            try (BufferedReader read = new BufferedReader(new FileReader("userData.txt"))) {
+            String line;
+            while ((line = read.readLine()) != null) {
+                String[] eventDetails = line.split(",");
+                // Check if this event matches the one to remove
+                if (eventDetails.length == 5 &&
+                    eventDetails[0].trim().equals(eventId) &&
+                    eventDetails[1].trim().equals(name) &&
+                    eventDetails[2].trim().equals(date) &&
+                    eventDetails[3].trim().equals(duration) &&
+                    eventDetails[4].trim().equals(time)) {
+                    continue; // Skip this line (remove it)
+                }
+                deletedData.add(line); // Keep all other events
+            }
+        }
+
+        // Write the updated events back to the file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userData.txt"))) {
+            for (String event : deletedData) {
+                writer.write(event);
+                writer.newLine();
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error updating file.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }
 
-           
-    }
-    }
-
+    
+ 
      //method in-charge for the start and end time of the operations. 
   private void startTimer() {
     try {
@@ -515,5 +544,7 @@ class Event {
         return timeOfEvent;
     }
     } 
-
+    public static void main(String[] args) {
+        new adminAddEvent();
+    }
 } 

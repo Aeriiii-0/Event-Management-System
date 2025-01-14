@@ -17,19 +17,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author USER
  */
-public class adminSearch extends JFrame implements ActionListener {
+public class userSearch extends JFrame implements ActionListener {
 
     JLabel lblHeader, lblResult;
     JPanel pnlTop;
     JTextField jtfSearch;
-    JButton btnSearch, btnBack;
+    JButton btnSearch,btnBack;
     JTable resultTable;
     DefaultTableModel tblModel;
     String[] columnNames = {"Event Name", "Name", "Date", "Event Duration", "Time of Event", "Status"};
     JScrollPane sclPane;
     ArrayList<String> search;
 
-    adminSearch() {
+    userSearch() {
         search = new ArrayList<>();
 
         // components code
@@ -66,9 +66,9 @@ public class adminSearch extends JFrame implements ActionListener {
         btnSearch.setContentAreaFilled(false);
         btnSearch.addActionListener(this);
         pnlTop.add(btnSearch);
-
+        
         btnBack=new JButton("Back");
-        btnBack.setBounds(857, 717, 200, 50);
+        btnBack.setBounds(857, 712, 200, 50);
         btnBack.setFont(new Font("Arial",Font.BOLD,12));
         btnBack.setForeground(new Color(66, 3, 104));
         btnBack.setBorderPainted(false);
@@ -76,7 +76,7 @@ public class adminSearch extends JFrame implements ActionListener {
         btnBack.setFocusPainted(false);
         add(btnBack);
         btnBack.addActionListener(this);
-        
+
         tblModel = new DefaultTableModel(columnNames, 0);
         resultTable = new JTable(tblModel);
         resultTable.setGridColor(new Color(66, 3, 104));
@@ -97,7 +97,6 @@ public class adminSearch extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSearch) {
@@ -105,8 +104,8 @@ public class adminSearch extends JFrame implements ActionListener {
             linearSearching(searchQuery); // code for linear search
             jtfSearch.setText(""); // clear the textfield after searching
         }else if(e.getSource()== btnBack){
-           new adminDashboard();
-           dispose();
+            new userDashboard();
+            dispose();
         }
 
     }
@@ -174,6 +173,6 @@ public class adminSearch extends JFrame implements ActionListener {
         }
     }
     public static void main(String[] args) {
-        new adminSearch();
+        new userSearch();
     }
 }

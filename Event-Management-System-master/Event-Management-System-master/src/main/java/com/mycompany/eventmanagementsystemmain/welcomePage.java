@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -11,7 +12,7 @@ import javax.swing.*;
 
 public class welcomePage extends JFrame implements ActionListener{
     
-    JButton btnBday,btnWed,btnChris,btnTap,btnOpenAdmin;
+    JButton btnBday,btnWed,btnChris,btnTap,btnOpenAdmin, btnExit;
     JLabel lblBdayImage,lblWedImageFinal,lblChristeningImageFinal,lblTagline,lblHeader;
     JPanel pnlBdayImage,pnlWeddingImage,pnlChristeningImage,pnlHeader;
     
@@ -29,7 +30,7 @@ public class welcomePage extends JFrame implements ActionListener{
         btnBday=new JButton("Birthday");
         btnBday.setBounds(100, 20, 200, 50);
         btnBday.setFont(new Font("Serif",Font.BOLD,20));
-        btnBday.setForeground(new Color(97, 3, 154));
+        btnBday.setForeground(new Color(66, 3, 104));
         btnBday.setBorderPainted(false);
         btnBday.setContentAreaFilled(false);
         btnBday.setFocusPainted(false);
@@ -39,7 +40,7 @@ public class welcomePage extends JFrame implements ActionListener{
         btnWed=new JButton("Wedding");
         btnWed.setBounds(400, 20, 200, 50);
         btnWed.setFont(new Font("Serif",Font.BOLD,20));
-        btnWed.setForeground(new Color(97, 3, 154));
+        btnWed.setForeground(new Color(66, 3, 104));
         btnWed.setBorderPainted(false);
         btnWed.setContentAreaFilled(false);
         btnWed.setFocusPainted(false);
@@ -49,7 +50,7 @@ public class welcomePage extends JFrame implements ActionListener{
         btnChris=new JButton("Christening");
         btnChris.setBounds(700, 20, 200, 50);
         btnChris.setFont(new Font("Serif",Font.BOLD,20));
-        btnChris.setForeground(new Color(97, 3, 154));
+        btnChris.setForeground(new Color(66, 3, 104));
         btnChris.setBorderPainted(false);
         btnChris.setContentAreaFilled(false);
         btnChris.setFocusPainted(false);
@@ -66,7 +67,7 @@ public class welcomePage extends JFrame implements ActionListener{
         
         pnlBdayImage=new JPanel();
         pnlBdayImage.setBounds(70, 175, 245, 295);
-        pnlBdayImage.setBackground(new Color(190, 140, 229));
+        pnlBdayImage.setBackground(new Color(170, 120, 209));
         add(pnlBdayImage);
         
         ImageIcon lblWedImage = new ImageIcon("images/wed.jpg");
@@ -78,7 +79,7 @@ public class welcomePage extends JFrame implements ActionListener{
          
         pnlWeddingImage=new JPanel();
         pnlWeddingImage.setBounds(375, 175, 240, 295);
-        pnlWeddingImage.setBackground(new Color(190, 140, 229));
+        pnlWeddingImage.setBackground(new Color(170, 120, 209));
         add(pnlWeddingImage);
         
         ImageIcon lblChristeningImage = new ImageIcon("images/baptism.jpg");
@@ -90,7 +91,7 @@ public class welcomePage extends JFrame implements ActionListener{
         
         pnlChristeningImage=new JPanel();
         pnlChristeningImage.setBounds(680, 175, 240, 295);
-        pnlChristeningImage.setBackground(new Color(190, 140, 229));
+        pnlChristeningImage.setBackground(new Color(170, 120, 209));
         add(pnlChristeningImage);
       
         lblTagline=new JLabel("Planning Made Simple, Events Made Spectacular",SwingConstants.CENTER);
@@ -125,10 +126,21 @@ public class welcomePage extends JFrame implements ActionListener{
         btnOpenAdmin.setFocusPainted(false);
         add(btnOpenAdmin);
         btnOpenAdmin.addActionListener(this);
+        
+        btnExit=new JButton("Exit");
+        btnExit.setBounds(0, 650, 200, 50);
+        btnExit.setFont(new Font("Serif",Font.BOLD,17));
+        btnExit.setForeground(new Color(66, 3, 104));
+        btnExit.setBorderPainted(false);
+        btnExit.setContentAreaFilled(false);
+        btnExit.setFocusPainted(false);
+        add(btnExit);
+        btnExit.addActionListener(this);
 
         pnlHeader=new JPanel();
-        pnlHeader.setBounds(0, 0, 1000, 80);
+        pnlHeader.setBounds(-2, -2, 1000, 90);
         pnlHeader.setBackground(new Color(190, 140, 229));
+        pnlHeader.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
         add(pnlHeader);
 
     // image background
@@ -150,15 +162,17 @@ public class welcomePage extends JFrame implements ActionListener{
    if(e.getSource()==btnBday){
      dispose();
      new userPageDisplay(); 
-     }else if(e.getSource()==btnWed){
+   }else if(e.getSource()==btnWed){
         dispose();
      new userPageDisplay();
-     } else if(e.getSource()==btnChris){
+   } else if(e.getSource()==btnChris){
        dispose();
      new userPageDisplay();
-     }else if(e.getSource()==btnTap){
+   }else if(e.getSource()==btnTap){
        dispose();
      new userLoginAndSignup();
+   } else if(e.getSource() ==btnExit){
+         System.exit(0);
      }
 //directs to admin log-in
    else if(e.getSource()==btnOpenAdmin){

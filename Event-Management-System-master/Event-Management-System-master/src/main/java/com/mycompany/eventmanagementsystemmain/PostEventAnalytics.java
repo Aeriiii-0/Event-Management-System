@@ -106,8 +106,8 @@ public class PostEventAnalytics extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
          if (e.getSource() == btnBack) {
-           System.exit(0);
-            
+           new welcomePage();
+           dispose(); 
         } else if (e.getSource() == btnGenerateAnalytics) {
             fetchDataFromDatabase();
             updateRegisterCountFromLastId();
