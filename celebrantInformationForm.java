@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,7 +22,7 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
     JPanel pnlInfoForm;
     JTextField tfName, tfDate, tfEvent;
     JButton btnRequest, btnBack;
-    JComboBox cmbDuration, cmbEventName;
+    JComboBox<String> cmbDuration, cmbEventName;
     String[] eventDuration = {"Select Option", "2 hours", "3 hours and half hours", "5 hours"};
     String[] eventNames = {"Select an option", "Birthday", "Wedding", "Christening"};
 
@@ -150,9 +153,8 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
             String timeDuration = (String) cmbDuration.getSelectedItem();
 
             if (!name.isEmpty() && !date.isEmpty() && !eventTime.isEmpty() &&
-                    !timeDuration.equals("Select Option") && !eventName.equals("Select Option")) {
+                    !timeDuration.equals("Select Option") && !eventName.equals("Select an option")) {
 
-                // Validate date and time
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 try {
                     String fullDateTime = date + " " + eventTime;
@@ -168,58 +170,56 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
                     return;
                 }
 
-                // Check if the event date and time already exist in the database
                 if (isEventTimeTaken(date, eventTime)) {
                     JOptionPane.showMessageDialog(null, "The selected date and time is already taken. Please choose another.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                // If everything is valid, proceed with the scheduling request
-                int conf = JOptionPane.showConfirmDialog(null, "Do you want to submit the event?");
+                try (PrintWriter writer = new PrintWriter(new FileWriter("userData.txt", true))) {
+                    writer.println(eventName + ", " + name + ", " + date + ", " + timeDuration + ", " + eventTime);
+                    JOptionPane.showMessageDialog(null, "Schedule requested successfully!");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Failed to save the schedule. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                int conf = JOptionPane.showConfirmDialog(null, "Do you want to exit?");
                 if (conf == JOptionPane.YES_OPTION) {
-                    JOptionPane.showMessageDialog(null, "Event scheduled successfully!");
-                    // Logic to save to database here
-                    
+                    JOptionPane.showMessageDialog(null, "See you soon !! >.<");
+                    System.exit(0);
+                } else if (conf == JOptionPane.NO_OPTION) {
+                    new userDashboard();
+                    dispose();
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Please answer all required fields", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else if (e.getSource() == btnBack) {
-           
+            new userDashboard();
             dispose();
         }
     }
 
-   private boolean isEventTimeTaken(String date, String time) {
-    // SQL query to check if the event date and time already exist
-    String url = "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL";
-    String user = "root";
-    String password = "052505"; // MySQL password
+    private boolean isEventTimeTaken(String date, String time) {
+        String url = "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL";
+        String user = "root";
+        String password = "052505";
 
-    // Assuming your table has 'event_date' and 'event_time' columns of type 'DATETIME'
-    String query = "SELECT COUNT(*) FROM evsmanagementsystem WHERE event_date = ? AND event_time = ?";
+        String query = "SELECT COUNT(*) FROM eventmanagement WHERE event_date = ? AND event_time = ?";
 
-    try (Connection conn = DriverManager.getConnection(url, user, password);
-         PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-        // Format the date and time properly to avoid mismatches
-        String fullDateTime = date + " " + time; // Combining date and time into one string
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            stmt.setString(1, date);
+            stmt.setString(2, time);
 
-        // Parse the full datetime string
-        Date parsedDateTime = dateFormat.parse(fullDateTime);
-        
-        stmt.setString(1, date);
-        stmt.setString(2, time); 
-
-        ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
-            int count = rs.getInt(1);
-            return count > 0; // If count > 0, the time is taken
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-    } catch (Exception ex) {
-        ex.printStackTrace();
+        return false;
     }
-    return false;
-}
 }
