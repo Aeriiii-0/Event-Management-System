@@ -48,6 +48,7 @@ String attendeeName, attendeeEmail, eventId, attendeeFeedback;
     setSize(1000,800);
     setLayout(null);
     setLocationRelativeTo(null);
+    setResizable(false);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     getContentPane().setBackground(new Color(213, 182, 238));
 
