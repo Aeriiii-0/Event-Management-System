@@ -25,6 +25,7 @@ JPanel pnlChoose, pnlBdayImage, pnlWedImage, pnlChristeningImage;
  setSize(1000, 800);
  setLocationRelativeTo(null);
  setTitle("EVENT VENTURE");
+ setResizable(false);         
  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  setLayout(null);
 
