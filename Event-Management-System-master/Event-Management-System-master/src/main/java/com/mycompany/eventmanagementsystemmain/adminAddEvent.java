@@ -1,4 +1,3 @@
-
 package com.mycompany.eventmanagementsystemmain;
 
 /*
@@ -32,232 +31,233 @@ import javax.swing.table.DefaultTableModel;
 
 public class adminAddEvent extends JFrame implements ActionListener{
     
-    JLabel lblHeader, lblEventName, lblName, lblDate, lblTimeDuration, lblTimeEvent, lblQueue;
-    JPanel pnlNorth, pnlCenter, pnlEast;
-    JTextField  tfName, tfDate, tfTimeEvent;
-    JTextArea txaNotif;
-    JButton btnAddEvent, btnRefreshTable, btnBack, btnViewDB;
-    JComboBox cmbDuration, cmbEventName;
-    String inputEventId, inputDate, inputName,inputTimeDuration,inputTimeOfEvent;
-    String [] eventName= {"Select Option","Birthday","Christening","Wedding"};
-    String [] eventDuration = {"Select Option", "2 hours", "3 hours and half hours" , "5 hours"}; 
-    String[] columnNames = {"Event Name", "Name", "Date", "Event Duration", "Time of Event"}; 
-    JScrollPane sclPane;
-    DefaultTableModel tblModel;
-    List<String> deletedData;
-    PriorityQueue<Event> queue;
-    JTable eventTable;
-    
-    adminAddEvent(){
-  
-        queue = new PriorityQueue<>(new EventComparator());
-        deletedData = new ArrayList<>();
+JLabel lblHeader, lblEventName, lblName, lblDate, lblTimeDuration, lblTimeEvent, lblQueue;
+JPanel pnlNorth, pnlCenter, pnlEast;
+JTextField  tfName, tfDate, tfTimeEvent;
+JTextArea txaNotif;
+JButton btnAddEvent, btnRefreshTable, btnBack, btnViewDB;
+JComboBox cmbDuration, cmbEventName;
+String inputEventId, inputDate, inputName,inputTimeDuration,inputTimeOfEvent;
+String [] eventName= {"Select Option","Birthday","Christening","Wedding"};
+String [] eventDuration = {"Select Option", "2 hours", "3 hours and half hours" , "5 hours"}; 
+String[] columnNames = {"Event Name", "Name", "Date", "Event Duration", "Time of Event"}; 
+JScrollPane sclPane;
+DefaultTableModel tblModel;
+List<String> deletedData;
+PriorityQueue<Event> queue;
+JTable eventTable;
 
-        //component settings
-        setSize(1000, 800);
-        setTitle("Event Venture");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setLayout(null);
+adminAddEvent(){
+
+    queue = new PriorityQueue<>(new EventComparator());
+    deletedData = new ArrayList<>();
+
+    //component settings
+    setSize(1000, 800);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setTitle("EVENT VENTURE");
+    setResizable(false);
+    setLocationRelativeTo(null);
+    setLayout(null);
 
 //top panel
-        pnlNorth = new JPanel();
-        pnlNorth.setLayout(null);
-        pnlNorth.setBounds(0, -1, 999, 110);
-        pnlNorth.setBackground(new Color(190, 140, 229));
-        
-        
-        txaNotif = new JTextArea("  NOTIFICATIONS: ");
-        txaNotif.setBounds(15, 17, 955, 80);
-        txaNotif.setBackground(new Color(213, 182, 238));
-        txaNotif.setFont(new Font("Serif", Font.BOLD, 15));
-        txaNotif.setForeground(new Color(66, 3, 104));
-        txaNotif.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        txaNotif.setLineWrap(true);  
-        txaNotif.setWrapStyleWord(true);
-        txaNotif.setEditable(false);
-        pnlNorth.add(txaNotif);
-//center panel
-        pnlCenter = new JPanel();
-        pnlCenter.setLayout(null);
-        pnlCenter.setBounds(0, 109, 1000, 598);
-        pnlCenter.setBackground(new Color(213, 182, 238));
-        
-//labels setting. added in center panel.
-        lblQueue = new JLabel("Guests in Queue:");
-        lblQueue.setFont(new Font("Arial", Font.BOLD, 15));
-        lblQueue.setBounds(25, 10, 400, 20);
-        lblQueue.setForeground(new Color(66, 3, 104));
-        pnlCenter.add(lblQueue);
-        
-        lblEventName = new JLabel("Event Name: ");
-        lblEventName.setFont(new Font("Arial", Font.BOLD, 17));
-        lblEventName.setForeground(new Color(66, 3, 104));
-        lblEventName.setBounds(675, 30, 200, 40);
-        pnlCenter.add(lblEventName);
-        
-        lblName = new JLabel("Name: ");
-        lblName.setFont(new Font("Arial", Font.BOLD, 17));
-        lblName.setForeground(new Color(66, 3, 104));
-        lblName.setBounds(675, 120, 200, 40);
-        pnlCenter.add(lblName);
-        
-        lblDate = new JLabel("Date: ");
-        lblDate.setFont(new Font("Arial", Font.BOLD, 17));
-        lblDate.setForeground(new Color(66, 3, 104));
-        lblDate.setBounds(675, 210, 200, 40);
-        pnlCenter.add(lblDate);
-        
-        lblTimeDuration = new JLabel("Time Duration:");
-        lblTimeDuration.setFont(new Font("Arial", Font.BOLD, 17));
-        lblTimeDuration.setForeground(new Color(66, 3, 104));
-        lblTimeDuration.setBounds(675, 300, 200, 40);
-        pnlCenter.add(lblTimeDuration);
-        
-        lblTimeEvent = new JLabel("Time of Event:");
-        lblTimeEvent.setFont(new Font("Arial", Font.BOLD, 17));
-        lblTimeEvent.setForeground(new Color(66, 3, 104));
-        lblTimeEvent.setBounds(675, 390, 200, 40);
-        pnlCenter.add(lblTimeEvent);
-        
-         //table settings
-        tblModel = new DefaultTableModel(columnNames, 0); 
-        eventTable = new JTable(tblModel); 
-        eventTable.setGridColor(new Color(66, 3, 104));
-        eventTable.setShowGrid(true); 
-        
-        sclPane = new JScrollPane(eventTable); 
-        sclPane.setBounds(30, 40, 610, 490); 
-        pnlCenter.add(sclPane);
-        
-       //textfields and combo boxes setting. added in center panel.
-        cmbEventName = new JComboBox(eventName);
-        cmbEventName.setBounds(675, 65, 280, 40);
-        cmbEventName.setBackground(new Color(190, 140, 229));
-        cmbEventName.setForeground(new Color(66, 3, 104));
-        cmbEventName.setFont(new Font("Serif",Font.BOLD,17));
-        cmbEventName.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        pnlCenter.add(cmbEventName);
-        
-        tfName = new JTextField();
-        tfName.setBounds(675, 155, 280, 40);
-        tfName.setBackground(new Color(190, 140, 229));
-        tfName.setForeground(new Color(66, 3, 104));
-        tfName.setFont(new Font("Serif",Font.BOLD,17));
-        tfName.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        pnlCenter.add(tfName);
-        
-        tfDate = new JTextField();
-        tfDate.setBounds(675, 245, 280, 40);
-        tfDate.setBackground(new Color(190, 140, 229));
-        tfDate.setForeground(new Color(66, 3, 104));
-        tfDate.setFont(new Font("Serif",Font.BOLD,17));
-        tfDate.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        pnlCenter.add(tfDate);
-       
-        cmbDuration = new JComboBox<>(eventDuration);  
-        cmbDuration.setBorder(null);
-        cmbDuration.setBounds(675, 335, 280, 40);  
-        cmbDuration.setBackground(new Color(190, 140, 229));
-        cmbDuration.setFont(new Font("Serif",Font.BOLD,17));
-        cmbDuration.setForeground(new Color(66, 3, 104));
-        cmbDuration.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        pnlCenter.add(cmbDuration);
-        
-        tfTimeEvent = new JTextField();
-        tfTimeEvent.setBounds(675, 425, 280, 40);
-        tfTimeEvent.setBackground(new Color(190, 140, 229));
-        tfTimeEvent.setForeground(new Color(66, 3, 104));
-        tfTimeEvent.setFont(new Font("Serif",Font.BOLD,17));
-        tfTimeEvent.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        pnlCenter.add(tfTimeEvent);
-      
-        //buttons setting. bounds are derived from center panel.
-        btnAddEvent = new JButton("ADD EVENT");
-        btnAddEvent.setFocusable(false);
-        btnAddEvent.setBounds(100, 548, 190, 30);
-        btnAddEvent.setForeground(new Color(66, 3, 104));
-        btnAddEvent.setContentAreaFilled(false);  
-        btnAddEvent.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        btnAddEvent.setFocusPainted(false);
-        btnAddEvent.addActionListener(this);
-        pnlCenter.add(btnAddEvent);
-       
-        btnRefreshTable = new JButton("REFRESH TABLE");
-        btnRefreshTable.setFocusable(false);
-        btnRefreshTable.setBounds(360, 548, 190, 30);
-        btnRefreshTable.setForeground(new Color(66, 3, 104));
-        btnRefreshTable.setContentAreaFilled(false);  
-        btnRefreshTable.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        btnRefreshTable.setFocusPainted(false);
-        btnRefreshTable.addActionListener(this);
-        pnlCenter.add(btnRefreshTable);
-        
-        //frame derived button bounds and setting.
-        btnBack=new JButton("Back");
-        btnBack.setBounds(857, 717, 200, 50);
-        btnBack.setFont(new Font("Arial",Font.BOLD,12));
-        btnBack.setForeground(new Color(66, 3, 104));
-        btnBack.setBorderPainted(false);
-        btnBack.setContentAreaFilled(false);
-        btnBack.setFocusPainted(false);
-        add(btnBack);
-        btnBack.addActionListener(this);
-        
-        btnViewDB=new JButton("View Database");
-        btnViewDB.setBounds(675, 494, 280, 35);
-        btnViewDB.setForeground(new Color(66, 3, 104));
-        btnViewDB.setFont(new Font("Serif",Font.BOLD,17));
-        btnViewDB.setContentAreaFilled(false);  
-        btnViewDB.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
-        btnViewDB.setFocusPainted(false);
-        btnViewDB.addActionListener(this);
-        pnlCenter.add(btnViewDB);
-        
-       //east panel setting (bottom panel)
-        pnlEast = new JPanel();
-        pnlEast.setBounds(0, 663, 1000, 110);
-        pnlEast.setLayout(null);
-        pnlEast.setBackground(new Color(190, 140, 229));
-        
-        lblHeader = new JLabel("ADMIN APPROVAL SLIP");
-        lblHeader.setFont(new Font("Arial", Font.BOLD, 25));
-        lblHeader.setBounds(355, 705, 400, 60);
-        lblHeader.setForeground(new Color(66, 3, 104));
-        add(lblHeader);
+    pnlNorth = new JPanel();
+    pnlNorth.setLayout(null);
+    pnlNorth.setBounds(0, -1, 999, 110);
+    pnlNorth.setBackground(new Color(190, 140, 229));
+
+
+    txaNotif = new JTextArea("  NOTIFICATIONS: ");
+    txaNotif.setBounds(15, 17, 955, 80);
+    txaNotif.setBackground(new Color(213, 182, 238));
+    txaNotif.setFont(new Font("Serif", Font.BOLD, 15));
+    txaNotif.setForeground(new Color(66, 3, 104));
+    txaNotif.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    txaNotif.setLineWrap(true);  
+    txaNotif.setWrapStyleWord(true);
+    txaNotif.setEditable(false);
+    pnlNorth.add(txaNotif);
+    //center panel
+    pnlCenter = new JPanel();
+    pnlCenter.setLayout(null);
+    pnlCenter.setBounds(0, 109, 1000, 598);
+    pnlCenter.setBackground(new Color(213, 182, 238));
+
+   //labels setting. added in center panel.
+    lblQueue = new JLabel("Guests in Queue:");
+    lblQueue.setFont(new Font("Arial", Font.BOLD, 15));
+    lblQueue.setBounds(25, 10, 400, 20);
+    lblQueue.setForeground(new Color(66, 3, 104));
+    pnlCenter.add(lblQueue);
+
+    lblEventName = new JLabel("Event Name: ");
+    lblEventName.setFont(new Font("Arial", Font.BOLD, 17));
+    lblEventName.setForeground(new Color(66, 3, 104));
+    lblEventName.setBounds(675, 30, 200, 40);
+    pnlCenter.add(lblEventName);
+
+    lblName = new JLabel("Name: ");
+    lblName.setFont(new Font("Arial", Font.BOLD, 17));
+    lblName.setForeground(new Color(66, 3, 104));
+    lblName.setBounds(675, 120, 200, 40);
+    pnlCenter.add(lblName);
+
+    lblDate = new JLabel("Date: ");
+    lblDate.setFont(new Font("Arial", Font.BOLD, 17));
+    lblDate.setForeground(new Color(66, 3, 104));
+    lblDate.setBounds(675, 210, 200, 40);
+    pnlCenter.add(lblDate);
+
+    lblTimeDuration = new JLabel("Time Duration:");
+    lblTimeDuration.setFont(new Font("Arial", Font.BOLD, 17));
+    lblTimeDuration.setForeground(new Color(66, 3, 104));
+    lblTimeDuration.setBounds(675, 300, 200, 40);
+    pnlCenter.add(lblTimeDuration);
+
+    lblTimeEvent = new JLabel("Time of Event:");
+    lblTimeEvent.setFont(new Font("Arial", Font.BOLD, 17));
+    lblTimeEvent.setForeground(new Color(66, 3, 104));
+    lblTimeEvent.setBounds(675, 390, 200, 40);
+    pnlCenter.add(lblTimeEvent);
+
+     //table settings
+    tblModel = new DefaultTableModel(columnNames, 0); 
+    eventTable = new JTable(tblModel); 
+    eventTable.setGridColor(new Color(66, 3, 104));
+    eventTable.setShowGrid(true); 
+
+    sclPane = new JScrollPane(eventTable); 
+    sclPane.setBounds(30, 40, 610, 490); 
+    pnlCenter.add(sclPane);
+
+   //textfields and combo boxes setting. added in center panel.
+    cmbEventName = new JComboBox(eventName);
+    cmbEventName.setBounds(675, 65, 280, 40);
+    cmbEventName.setBackground(new Color(190, 140, 229));
+    cmbEventName.setForeground(new Color(66, 3, 104));
+    cmbEventName.setFont(new Font("Serif",Font.BOLD,17));
+    cmbEventName.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    pnlCenter.add(cmbEventName);
+
+    tfName = new JTextField();
+    tfName.setBounds(675, 155, 280, 40);
+    tfName.setBackground(new Color(190, 140, 229));
+    tfName.setForeground(new Color(66, 3, 104));
+    tfName.setFont(new Font("Serif",Font.BOLD,17));
+    tfName.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    pnlCenter.add(tfName);
+
+    tfDate = new JTextField();
+    tfDate.setBounds(675, 245, 280, 40);
+    tfDate.setBackground(new Color(190, 140, 229));
+    tfDate.setForeground(new Color(66, 3, 104));
+    tfDate.setFont(new Font("Serif",Font.BOLD,17));
+    tfDate.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    pnlCenter.add(tfDate);
+
+    cmbDuration = new JComboBox<>(eventDuration);  
+    cmbDuration.setBorder(null);
+    cmbDuration.setBounds(675, 335, 280, 40);  
+    cmbDuration.setBackground(new Color(190, 140, 229));
+    cmbDuration.setFont(new Font("Serif",Font.BOLD,17));
+    cmbDuration.setForeground(new Color(66, 3, 104));
+    cmbDuration.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    pnlCenter.add(cmbDuration);
+
+    tfTimeEvent = new JTextField();
+    tfTimeEvent.setBounds(675, 425, 280, 40);
+    tfTimeEvent.setBackground(new Color(190, 140, 229));
+    tfTimeEvent.setForeground(new Color(66, 3, 104));
+    tfTimeEvent.setFont(new Font("Serif",Font.BOLD,17));
+    tfTimeEvent.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    pnlCenter.add(tfTimeEvent);
+
+    //buttons setting. bounds are derived from center panel.
+    btnAddEvent = new JButton("ADD EVENT");
+    btnAddEvent.setFocusable(false);
+    btnAddEvent.setBounds(100, 548, 190, 30);
+    btnAddEvent.setForeground(new Color(66, 3, 104));
+    btnAddEvent.setContentAreaFilled(false);  
+    btnAddEvent.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    btnAddEvent.setFocusPainted(false);
+    btnAddEvent.addActionListener(this);
+    pnlCenter.add(btnAddEvent);
+
+    btnRefreshTable = new JButton("REFRESH TABLE");
+    btnRefreshTable.setFocusable(false);
+    btnRefreshTable.setBounds(360, 548, 190, 30);
+    btnRefreshTable.setForeground(new Color(66, 3, 104));
+    btnRefreshTable.setContentAreaFilled(false);  
+    btnRefreshTable.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    btnRefreshTable.setFocusPainted(false);
+    btnRefreshTable.addActionListener(this);
+    pnlCenter.add(btnRefreshTable);
+
+    //frame derived button bounds and setting.
+    btnBack=new JButton("Back");
+    btnBack.setBounds(857, 717, 200, 50);
+    btnBack.setFont(new Font("Arial",Font.BOLD,12));
+    btnBack.setForeground(new Color(66, 3, 104));
+    btnBack.setBorderPainted(false);
+    btnBack.setContentAreaFilled(false);
+    btnBack.setFocusPainted(false);
+    add(btnBack);
+    btnBack.addActionListener(this);
+
+    btnViewDB=new JButton("View Database");
+    btnViewDB.setBounds(675, 494, 280, 35);
+    btnViewDB.setForeground(new Color(66, 3, 104));
+    btnViewDB.setFont(new Font("Serif",Font.BOLD,17));
+    btnViewDB.setContentAreaFilled(false);  
+    btnViewDB.setBorder(BorderFactory.createLineBorder(new Color(66, 3, 104), 3));
+    btnViewDB.setFocusPainted(false);
+    btnViewDB.addActionListener(this);
+    pnlCenter.add(btnViewDB);
+
+   //east panel setting (bottom panel)
+    pnlEast = new JPanel();
+    pnlEast.setBounds(0, 663, 1000, 110);
+    pnlEast.setLayout(null);
+    pnlEast.setBackground(new Color(190, 140, 229));
+
+    lblHeader = new JLabel("ADMIN APPROVAL SLIP");
+    lblHeader.setFont(new Font("Arial", Font.BOLD, 25));
+    lblHeader.setBounds(355, 705, 400, 60);
+    lblHeader.setForeground(new Color(66, 3, 104));
+    add(lblHeader);
         
         eventTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int selectedRow = eventTable.getSelectedRow(); // Get the row that was clicked
+    
+    public void mouseClicked(java.awt.event.MouseEvent evt) {
+    int selectedRow = eventTable.getSelectedRow(); // Get the row that was clicked
 
-                // Get the data from each column of the selected row
-                if (selectedRow != -1) {
-                    String eventName = tblModel.getValueAt(selectedRow, 0).toString(); 
-                    String name = tblModel.getValueAt(selectedRow, 1).toString();    
-                    String date = tblModel.getValueAt(selectedRow, 2).toString();   
-                    String duration = tblModel.getValueAt(selectedRow, 3).toString(); 
-                    String timeOfEvent = tblModel.getValueAt(selectedRow, 4).toString(); 
+    // Get the data from each column of the selected row
+    if (selectedRow != -1) {
+        String eventName = tblModel.getValueAt(selectedRow, 0).toString(); 
+    String name = tblModel.getValueAt(selectedRow, 1).toString();    
+    String date = tblModel.getValueAt(selectedRow, 2).toString();   
+    String duration = tblModel.getValueAt(selectedRow, 3).toString(); 
+    String timeOfEvent = tblModel.getValueAt(selectedRow, 4).toString(); 
 
-                    // Set the retrieved data from the table to the textfields.
-                    tfName.setText(name);             
-                    tfDate.setText(date);            
-                    tfTimeEvent.setText(timeOfEvent);
-                    cmbEventName.setSelectedItem(eventName);
-                    cmbDuration.setSelectedItem(duration);  
-                }
+    // Set the retrieved data from the table to the textfields.
+    tfName.setText(name);             
+    tfDate.setText(date);            
+    tfTimeEvent.setText(timeOfEvent);
+    cmbEventName.setSelectedItem(eventName);
+    cmbDuration.setSelectedItem(duration);  
             }
-        });
-        
-        
-        readDataFromFile("userdata.txt");
-        
-        //addition of all the panels, ensuring its components' visibility.      
-        add(pnlCenter);
-        add(pnlEast);
-        add(pnlNorth);
+        }
+    });
 
-        setVisible(true);
+
+    readDataFromFile("userData.txt");
+
+    //addition of all the panels, ensuring its components' visibility.      
+    add(pnlCenter);
+    add(pnlEast);
+    add(pnlNorth);
+
+    setVisible(true);
     } 
 
   @Override
@@ -273,7 +273,7 @@ public class adminAddEvent extends JFrame implements ActionListener{
             
         }else if(e.getSource()==btnRefreshTable){
            JOptionPane.showMessageDialog(null, "Table Refreshed", "Refreshing", JOptionPane.INFORMATION_MESSAGE);
-            readDataFromFile("userdata.txt");
+            readDataFromFile("userData.txt");
             refreshTable();
         }  else if(e.getSource()==btnBack){
          new adminDashboard(); 
@@ -291,11 +291,11 @@ public class adminAddEvent extends JFrame implements ActionListener{
     while (!tempQueue.isEmpty()) {
         Event event = tempQueue.poll();
         tblModel.addRow(new Object[]{
-                event.getEventName(),
-                event.getName(),
-                event.getDate(),
-                event.getDuration(),
-                event.getTimeOfEvent()
+        event.getEventName(),
+        event.getName(),
+        event.getDate(),
+        event.getDuration(),
+        event.getTimeOfEvent()
         });
     }
 }
@@ -355,7 +355,7 @@ public class adminAddEvent extends JFrame implements ActionListener{
 
                 stmt.executeUpdate(); //execution of the process.
          
-        //method for auto-incrementation in database. Arranged regardless of the type of event.
+        //method for auto-incrementation ID in database. Arranged regardless of the type of event.
              try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         int eventId = generatedKeys.getInt(1);
@@ -364,19 +364,15 @@ public class adminAddEvent extends JFrame implements ActionListener{
                         throw new SQLException("Adding event failed, no ID available obtained.");
                     }
                 }
-           
-        int selectedRow = eventTable.getSelectedRow(); // Get the selected row index.
+    //removing user data from textfile if they're added to database     
+        int selectedRow = eventTable.getSelectedRow(); 
          if (selectedRow >= 0) {
-          String eventNameToRemove = (String) tblModel.getValueAt(selectedRow, 0); // Event name.
-          queue.removeIf(e -> e.getEventName().equals(eventNameToRemove)); // Remove from queue.
-          tblModel.removeRow(selectedRow); // Remove from table model.
+          String eventNameToRemove = (String) tblModel.getValueAt(selectedRow, 0); 
+          queue.removeIf(e -> e.getEventName().equals(eventNameToRemove)); 
+          tblModel.removeRow(selectedRow); 
                 
          for (Event event : queue) {
-          if (event.getEventName().equals(inputEventId)
-          && event.getName().equals(inputName)
-          && event.getDate().equals(inputDate)
-          && event.getDuration().equals(inputTimeDuration)
-          && event.getTimeOfEvent().equals(inputTimeOfEvent)) {
+          if (event.getEventName().equals(inputEventId) && event.getName().equals(inputName)  && event.getDate().equals(inputDate) && event.getDuration().equals(inputTimeDuration) && event.getTimeOfEvent().equals(inputTimeOfEvent)) {
           queue.remove(event); // Remove the event from the queue
           break;  
       }
@@ -389,14 +385,15 @@ public class adminAddEvent extends JFrame implements ActionListener{
 }      
 }
  }
+    //method for handling data transfer from celebInfoForm to the current frame
     private void removeAddedData(String eventId, String name, String date, String duration, String time) {
     
         try {
-            try (BufferedReader read = new BufferedReader(new FileReader("userdata.txt"))) {
+            try (BufferedReader read = new BufferedReader(new FileReader("userData.txt"))) {
             String line;
             while ((line = read.readLine()) != null) {
                 String[] eventDetails = line.split(",");
-                // Check if this event matches the one to remove
+                
                 if (eventDetails.length == 5 &&
                     eventDetails[0].trim().equals(eventId) &&
                     eventDetails[1].trim().equals(name) &&
@@ -405,12 +402,12 @@ public class adminAddEvent extends JFrame implements ActionListener{
                     eventDetails[4].trim().equals(time)) {
                     continue; // Skip this line (remove it)
                 }
-                deletedData.add(line); // Keep all other events
+                deletedData.add(line); 
             }
         }
 
-        // Write the updated events back to the file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userdata.txt"))) {
+        
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userData.txt"))) {
             for (String event : deletedData) {
                 writer.write(event);
                 writer.newLine();
@@ -422,8 +419,6 @@ public class adminAddEvent extends JFrame implements ActionListener{
     }
 }
 
-    
- 
      //method in-charge for the start and end time of the operations. 
   private void startTimer() {
     try {
@@ -434,12 +429,7 @@ public class adminAddEvent extends JFrame implements ActionListener{
         long currentTimeInMillis = System.currentTimeMillis();
         
         if (eventTimeInMillis <= currentTimeInMillis) {
-        JOptionPane.showMessageDialog(null, "The event date/time is in the past. Please enter a valid future time.");
-        tfDate.setText("");
-        cmbEventName.setSelectedIndex(0);
-        tfName.setText("");
-        tfTimeEvent.setText("");
-        cmbDuration.setSelectedIndex(0);
+            JOptionPane.showMessageDialog(null, "The event date/time is in the past. Please enter a valid future time.");
             return;
         }
         
@@ -552,5 +542,6 @@ class Event {
     public String getTimeOfEvent() {
         return timeOfEvent;
     }
-     } 
+  } 
+   
 } 

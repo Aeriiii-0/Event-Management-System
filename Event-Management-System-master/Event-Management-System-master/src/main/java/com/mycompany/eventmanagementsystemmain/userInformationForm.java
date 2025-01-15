@@ -9,16 +9,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import javax.swing.*;
 
-class Guest {
+class attendeeInput {
 String name;
 String email;
 String eventId;
 String feedback;
 
-public Guest(String name, String email, String eventId, String feedback) {
+public attendeeInput(String name, String email, String eventId, String feedback) {
 this.name = name;
 this.email = email;
 this.eventId = eventId;
@@ -39,17 +40,18 @@ JTextField tfUserName, tfEmail, tfEventId;
 JTextArea txaFeedback;
 JPanel pnlUp, pnlDown;
 int attendeeCount=0;
-LinkedList<Guest> guestList = new LinkedList<>();
+LinkedList<attendeeInput> attendeeInformationList = new LinkedList<>();
 String attendeeName, attendeeEmail, eventId, attendeeFeedback;
 
  userInformationForm(){
      
-    //component settings
-    setSize(1000,800);
-    setLayout(null);
+ //component settings
+     setSize(1000, 800);
     setLocationRelativeTo(null);
-    setResizable(false);
+    setTitle("EVENT VENTURE");
+    setResizable(false);         
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLayout(null);
     getContentPane().setBackground(new Color(213, 182, 238));
 
     lblUserName = new JLabel("NAME:");
@@ -160,67 +162,150 @@ String attendeeName, attendeeEmail, eventId, attendeeFeedback;
         
     }
 
-    @Override
-   public void actionPerformed(ActionEvent e) {
-       
+@Override
+public void actionPerformed(ActionEvent e) {
 if (e.getSource() == btnSubmitForm) {
- //Collecting attendee input.
+    
+   //Collecting attendee input.
     attendeeName= tfUserName.getText().trim();
     attendeeEmail = tfEmail.getText().trim();
     eventId = tfEventId.getText().trim();
     attendeeFeedback= txaFeedback.getText().trim();
+    
+    //validate fields if all are filled
+     if (attendeeName.isEmpty() || attendeeEmail.isEmpty() || eventId.isEmpty() || attendeeFeedback.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "All fields are required.");
+        return ;
+     }
+     
+    //collect user information and add to linkedList
+    attendeeInput attendeeInformation = new attendeeInput(attendeeName, attendeeEmail, eventId, attendeeFeedback);
+    attendeeInformationList.add(attendeeInformation);
 
-    //validating fields if they're field with required data.
- if (attendeeName.isEmpty() && attendeeEmail.isEmpty() && eventId.isEmpty() && attendeeFeedback.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "All fields are empty. Please fill in the required details.");
+    //if valid, add to database.
+   if (checkPoints()) {
+    addAttendeeToDatabase();
+    JOptionPane.showMessageDialog(this, "You are registered! Enjoy everything <3", "Registration Successful", JOptionPane.INFORMATION_MESSAGE);
+    
+    int askUser = JOptionPane.showConfirmDialog(null, "Do you want to submit another form?");
+    if (askUser == JOptionPane.YES_OPTION) {
+        updateAttendeeCount();
+        setFields();
+    } else if (askUser == JOptionPane.NO_OPTION) {
+        new welcomePage();
+        dispose();
+    } else {
+        setFields();
+        return;
+    }
+ }
+   else {
+    JOptionPane.showMessageDialog(  this, "Please make sure that you enter correct data. \n Please try again.",   "ERROR",   JOptionPane.ERROR_MESSAGE);
+    setFields();
     return;
-             }
-        Guest guest = new Guest(attendeeName, attendeeEmail, eventId, attendeeFeedback);
-        guestList.add(guest);
+       }
+    }
+ }
 
-        addAttendeeToDatabase();
 
-        int askUser = JOptionPane.showConfirmDialog(null, "Do you want to submit another form?");
-        if (askUser == JOptionPane.YES_OPTION) {
-         updateRegisterCountFromLastId();  
-          setFields();
-        }
-        else if(askUser==JOptionPane.NO_OPTION){
-          new welcomePage();
-           dispose();
-        }
-         else {
-             setFields();
-             return;
-        }
-        }
+ //checks if all information are valid before recording the data.
+  private boolean checkPoints() {
+      
+     if (!validateEventId(eventId)) {
+        JOptionPane.showMessageDialog(this, "Invalid or non-existent Event ID.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        setFields();
+        return false;
+    }
+ 
+    if (!isWithinEventTime(eventId)) {
+        JOptionPane.showMessageDialog(this, "Current time does not align with the scheduled event.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+    
+    if (!eventId.matches("[a-zA-Z0-9]+")) {
+        JOptionPane.showMessageDialog(this, "Invalid Event ID. Only alphanumeric characters are allowed.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        tfEventId.setText("");
+        return false;
+    }
+    
+    if (!attendeeEmail.contains("@gmail.com")) {
+        JOptionPane.showMessageDialog(this, "Invalid Email Address", "ERROR", JOptionPane.ERROR_MESSAGE);
+        setFields();
+        return false;
     }
 
+    return true;
+}
+  
+//method for validating eventId in the database.
+ private boolean validateEventId(String eventId) {
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/eventmanagement", "root", "1234")) {
+        String query = "SELECT eventId FROM event WHERE eventId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, eventId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next(); 
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Database error during event ID validation: " + e.getMessage());
+    }
+    return false;
+}
+
+ 
+ //after validating eventId, the next is if it's aligned with the time slot they're given
+private boolean isWithinEventTime(String eventId) {
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/eventmanagement", "root", "1234")) {
+        String query = "SELECT time FROM event WHERE eventId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, eventId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String eventStartTime = rs.getString("time");
+
+                    LocalTime startTime = LocalTime.parse(eventStartTime);
+                    LocalTime currentTime = LocalTime.now();
+
+                    return !currentTime.isBefore(startTime); 
+                }
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Database error during time validation: " + e.getMessage());
+    }
+    return false;
+}
+
+
+ //method for adding attendee to database
 private void addAttendeeToDatabase() {
 
     try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/eventmanagement", "root", "1234")) {
         String query = "INSERT INTO attendee (name, email, eventId, feedback) VALUES (?,?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            for (Guest guest : guestList) {
-            stmt.setString(1, guest.name);
-            stmt.setString(2, guest.email);
-            stmt.setString(3, guest.eventId);
-            stmt.setString(4, guest.feedback);
+            for (attendeeInput attendeeInformation : attendeeInformationList) {
+            stmt.setString(1, attendeeInformation.name);
+            stmt.setString(2, attendeeInformation.email);
+            stmt.setString(3, attendeeInformation.eventId);
+            stmt.setString(4, attendeeInformation.feedback);
             stmt.addBatch();
             }
+            //executing query and removing the attendee on the list once added on db
             stmt.executeBatch();
-            guestList.clear();
-            JOptionPane.showMessageDialog(null, "Successful Registration!");
+            attendeeInformationList.clear();
             setFields();
-        }
+            
+         }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Input Error: " + e.getMessage());
             setFields();
             return;
-            
-        }
+          }
+    
     }
-    private void updateRegisterCountFromLastId() {
+
+//method for updating the current count of ateendees who registered
+    private void updateAttendeeCount() {
          try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/eventmanagement", "root", "1234")) {
         String query = "SELECT MAX(id) AS last_id FROM attendee";
         try (Statement stmt = connection.createStatement();
@@ -239,15 +324,15 @@ private void addAttendeeToDatabase() {
        }
     }
     
+    
     private void setFields(){
-    tfEmail.setText("");
-    tfEventId.setText("");
-    tfUserName.setText("");
-    txaFeedback.setText("");
+    tfEmail.setText(" ");
+    tfEventId.setText(" ");
+    tfUserName.setText(" ");
+    txaFeedback.setText(" ");
     }
-    public static void main(String[] args) {
-        new userInformationForm();
-    }
+   
+    
 } 
         
     

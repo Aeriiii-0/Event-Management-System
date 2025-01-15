@@ -6,23 +6,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-/**
- *
- * @author USER
- */
+
 public class aboutUs extends JFrame implements ActionListener{
     
-    JLabel lblHeader, lblHeader2, lblSubHeader, lblContact, lblFollow, lblTelephone, lblCellphone, lblFacebook, lblInstagram, lblWhatsApp, lblTwitter;
+    JLabel lblHeader, lblHeader2, lblSubHeader, lblContact, lblFollow, lblTelephone, lblCellphone, lblFacebook, lblInstagram;
     JPanel pnlTop, pnlCenter, pnlContact, pnlFollow;
     JButton btnMyEvent, btnScheduleEvent, btnAboutUs, btnSearch, btnBack;
     
     aboutUs() {
+        
     // Frame settings
     setSize(1000, 800);
     setLocationRelativeTo(null);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(null);
-    setResizable(false);
+    setTitle("EVENT VENTURE");
+    setResizable(false); 
     getContentPane().setBackground(new Color(213, 182, 238));
 
     pnlCenter = new JPanel();
@@ -58,13 +57,10 @@ public class aboutUs extends JFrame implements ActionListener{
     lblFollow.setBounds(110, 0, 300, 50);
     pnlFollow.add(lblFollow);
 
-
-
     lblHeader = new JLabel("About Us");
     lblHeader.setFont(new Font("Serif", Font.BOLD, 30));
     lblHeader.setForeground(new Color(66, 3, 104));
     lblHeader.setBounds(30, 30, 300, 40);
-
 
     lblHeader2 = new JLabel("EVENT VENTURE");
     lblHeader2.setFont(new Font("Serif",Font.BOLD,30));
@@ -72,6 +68,7 @@ public class aboutUs extends JFrame implements ActionListener{
     lblHeader2.setBounds(170, 30, 500, 40);
     pnlCenter.add(lblHeader2);
 
+    //frame paragraph
     lblSubHeader = new JLabel("<html>" 
             + "<div style='text-align: center;'>"
             + "<p style='line-height: 1.8;'>Welcome to our Event Management System, your all-in-one solution for planning, organizing, and managing events effortlessly. "

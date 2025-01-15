@@ -1,41 +1,35 @@
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.eventmanagementsystemmain;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.sql.*;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-/**
- *
- * @author 63955
- */
-
 public class celebrantInformationForm extends JFrame implements ActionListener {
     
-  JLabel lblName, lblDate, lblHeader, lblEvent, lblDuration, lblEventName;
-  JPanel pnlInfoForm;
-  JTextField tfName, tfDate, tfEvent;
-  JButton btnRequest,btnBack;
-  JComboBox  cmbDuration,cmbEventName;
-  String [] eventDuration = {"Select Option", "2 hours", "3 hours and half hours" , "5 hours"}; 
-  String[] eventNames = {"Select an option", "Birthday", "Wedding", "Christening"};
-  
-  celebrantInformationForm(){
+JLabel lblName, lblDate, lblHeader, lblEvent, lblDuration, lblEventName;
+JPanel pnlInfoForm;
+JTextField tfName, tfDate, tfEvent;
+JButton btnRequest,btnBack;
+JComboBox  cmbDuration,cmbEventName;
+String [] eventDuration = {"Select Option", "2 hours", "3 hours and half hours" , "5 hours"}; 
+String[] eventNames = {"Select an option", "Birthday", "Wedding", "Christening"}; 
+
+ celebrantInformationForm(){
 
 //component settings
     setSize(1000, 800);
     setLocationRelativeTo(null);
+    setTitle("EVENT VENTURE");
+    setResizable(false);         
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(null);
-    setResizable(false);
     getContentPane().setBackground(new Color(213, 182, 238));
     
     lblHeader = new JLabel("CELEBRANT INFORMATION FORM");
@@ -155,65 +149,117 @@ public class celebrantInformationForm extends JFrame implements ActionListener {
     setVisible(true);
     
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
+  
+  
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    if (e.getSource() == btnRequest) {
         
-    if (e.getSource() == btnRequest){
-        String eventName = (String) cmbEventName.getSelectedItem();// name of event
-        String name = tfName.getText(); // name of celebrant
-        String date = tfDate.getText(); // date of celebration
-        String eventTime = tfEvent.getText(); //time to party to take place
-        String timeDuration = (String) cmbDuration.getSelectedItem(); // longevity of the event
+   // Validating text fields
+   if (tfName.getText().isEmpty() || tfDate.getText().isEmpty() || tfEvent.getText().isEmpty() || 
+    cmbDuration.getSelectedItem().equals("Select Option") || cmbEventName.getSelectedItem().equals("Select an option")) {
+    JOptionPane.showMessageDialog(null, "Please fill in all required fields.", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+ 
+    //collect user inputs
+    String eventName = (String) cmbEventName.getSelectedItem(); //user selected event
+    String name = tfName.getText(); //name of celebrant
+    String date = tfDate.getText(); // collect date
+    String timeEvent = tfEvent.getText(); // collect time of event
+    String duration = (String) cmbDuration.getSelectedItem();  //collect the time duration
 
-       if(!name.isEmpty() || !date.isEmpty() || !eventTime.isEmpty()||timeDuration.equals("Select Option")||eventName.equals("Select Option")){
+    
+     // if validated, proceed to parsing date and time together
+     try {
+        SimpleDateFormat dateAndTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        dateAndTime.setLenient(false);
 
-         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm");
+        String combineDateAndTime = date + " " + timeEvent;
+        Date finalDateTime = dateAndTime.parse(combineDateAndTime);
 
-      try { 
-          String fullDateTime = date + " " + eventTime;
-          Date parsedDateTime = dateFormat.parse(fullDateTime);
+        Date getTimeAndDate = new Date(); //retrieve what the current time is
 
-           Date currentDateTime = new Date();
-           
-          if (parsedDateTime.before(currentDateTime)) {
-        JOptionPane.showMessageDialog(null, "Invalid time. The entered time has already passed.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    } 
+        if (finalDateTime.before(getTimeAndDate)) {
+            JOptionPane.showMessageDialog(null, "The selected Date or Time has already passed. Please choose valid time.", "Error", JOptionPane.ERROR_MESSAGE);
+            eraseFields();
+            return;
+        }
+        
+        
+      //select duration to estimate intervals between events
+      try {
+        int durationMinutes = switch (duration) {
+            case "2 hours" -> 3; //120 min
+            case "3 hours and half hours" -> 5; // 210 min
+            case "5 hours" -> 8;//300 min
+            default -> 0;
+        };
 
-          } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "Invalid date or time format. Please use yyyy-MM-dd for date and HH:mm for time.", "Error", JOptionPane.ERROR_MESSAGE);
+        if (durationMinutes == 0) {
+            JOptionPane.showMessageDialog(null, "Invalid duration selected.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
- //file handling for directing users information of request to admin approval slip
+        //scan data from db if there's event that may overlap.
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/eventmanagement", "root", "1234")) {
+            String checkQuery = "SELECT * FROM event WHERE date = ?  AND (TIME(?) < ADDTIME(time, SEC_TO_TIME(duration * 60))  AND TIME(?) >= time)";
 
-        try (PrintWriter writer = new PrintWriter(new FileWriter("userData.txt", true))) {
-            writer.println(eventName + ", " + name + ", " + date  + ", " + timeDuration + ", " + eventTime);
-            JOptionPane.showMessageDialog(null, "Schedule requested successfully!");
-            } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Failed to save the schedule. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
+                checkStmt.setString(1, date);
+                checkStmt.setString(2, timeEvent);
+                checkStmt.setString(3, timeEvent);
+
+                try (ResultSet rs = checkStmt.executeQuery()) {
+                    if (rs.next()) {
+                    JOptionPane.showMessageDialog(null, "Time slot not available. Please pick another time.", "Error", JOptionPane.ERROR_MESSAGE);
+                    eraseFields();
+                        return;
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+            return;
         }
 
-        int conf = JOptionPane.showConfirmDialog(null, "Do you want to exit?");
-        if (conf == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(null, "See you soon !! >.<");
-            System.exit(0);
-            
-       } else if (conf == JOptionPane.NO_OPTION) {
-             new userDashboard();
-             dispose();
-       }
+    // add the user input to userData for adding the customers in prio queue.
+    try (PrintWriter writer = new PrintWriter(new FileWriter("userData.txt", true))) {
+        writer.println(eventName + ", " + name + ", " + date + ", " + duration + ", " + timeEvent);
+        JOptionPane.showMessageDialog(null, "Schedule requested successfully! \n Visit 'My Events' for the event status. ");
+        eraseFields();
+        
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(null, "Failed to save the schedule to file. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        eraseFields();
+     }
 
-          } else {
-                JOptionPane.showMessageDialog(null, "Please answer all required fields", "Error", JOptionPane.ERROR_MESSAGE);
-              }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "An error occurred. Please check your input.", "Error", JOptionPane.ERROR_MESSAGE);
+                eraseFields();
+                 ex.printStackTrace();
+                return;
+            }
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "Invalid date or time format. Please use 'yyyy-MM-dd' for the date and 'HH:mm' for the time.", "Error", JOptionPane.ERROR_MESSAGE);
+            eraseFields();
+            return;
+        }
+    }
 
-    
-    } else if (e.getSource() == btnBack) {
+    else if (e.getSource() == btnBack) {
         new userDashboard();
         dispose();
     }
 }
-
+  
+    private void eraseFields(){
+   tfDate.setText("");
+   cmbEventName.setSelectedIndex(0);
+   tfName.setText("");
+   tfEvent.setText(" ");
+   cmbDuration.setSelectedIndex(0);
+  }
+    
 }

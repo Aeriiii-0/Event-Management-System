@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.eventmanagementsystemmain;
 
-/**
- *
- * @author 63955
- */
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -19,10 +12,10 @@ JLabel lblBirthday, lblWedding,lblChristening, lblHeader;
 JPanel pnlChoose, pnlBdayImage, pnlWedImage, pnlChristeningImage;
 
        
-   userPageDisplay(){
+ userPageDisplay(){
 
 //component settings
- setSize(1000, 800);
+  setSize(1000, 800);
  setLocationRelativeTo(null);
  setTitle("EVENT VENTURE");
  setResizable(false);         
@@ -146,24 +139,24 @@ JPanel pnlChoose, pnlBdayImage, pnlWedImage, pnlChristeningImage;
  setVisible(true);
 } 
    
-   @Override
-       public void actionPerformed(ActionEvent e){
-      //directs user to user inquiry (celebrantInformationForm)
-       if(e.getSource() == btnBirthday){
-             new celebrantInformationForm();
-             dispose();
-        } else if (e.getSource() == btnWedding) {
-            new celebrantInformationForm();
-             dispose();
-        } else if (e.getSource() == btnChristening) {
-            new celebrantInformationForm();
-             dispose();
-        }
-       else if (e.getSource() == btnBack) {
-            new userDashboard();
-            dispose();
-        }
-       }
-             }
+@Override
+ public void actionPerformed(ActionEvent e){
+   //directs user to user inquiry (celebrantInformationForm)
+    if(e.getSource() == btnBirthday){
+          new celebrantInformationForm();
+          dispose();
+     } else if (e.getSource() == btnWedding) {
+         new celebrantInformationForm();
+          dispose();
+     } else if (e.getSource() == btnChristening) {
+         new celebrantInformationForm();
+          dispose();
+     }
+    else if (e.getSource() == btnBack) {
+         new userDashboard();
+         dispose();
+     }
+   }
+}
                
 

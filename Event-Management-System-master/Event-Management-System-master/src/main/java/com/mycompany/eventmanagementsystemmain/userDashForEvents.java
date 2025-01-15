@@ -9,23 +9,24 @@ import javax.swing.table.DefaultTableModel;
 
 public class userDashForEvents extends JFrame implements ActionListener {
 
-    JLabel lblHeader, lblHeader2;
-    JPanel pnlTop;
-    JButton btnMyEvent, btnScheduleEvent, btnAboutUs, btnRefreshTable, btnBack, btnSearch;
-    JTable eventTable;
-    String[] columnNames = {"Event ID", "Event Name", "Name", "Date", "Event Duration", "Time of Event", "Status"};
-    JScrollPane sclPane;
-    private static DefaultTableModel tblModel;
+JLabel lblHeader, lblHeader2;
+JPanel pnlTop;
+JButton btnMyEvent, btnScheduleEvent, btnAboutUs, btnRefreshTable, btnBack, btnSearch;
+JTable eventTable;
+String[] columnNames = {"Event ID", "Event Name", "Name", "Date", "Event Duration", "Time of Event", "Status"};
+JScrollPane sclPane;
+private static DefaultTableModel tblModel;
 
-    public userDashForEvents() {
+ userDashForEvents() {
+     
     // Frame settings
     setSize(1000, 800);
     setLocationRelativeTo(null);
+    setTitle("EVENT VENTURE");
+    setResizable(false);         
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(null);
-    setResizable(false);
     getContentPane().setBackground(new Color(190, 140, 229));
-
 
     lblHeader = new JLabel("Event Venture");
     lblHeader.setFont(new Font("Serif", Font.BOLD, 30));
@@ -39,7 +40,7 @@ public class userDashForEvents extends JFrame implements ActionListener {
     lblHeader2.setBounds(30, 130, 500, 40);
     add(lblHeader2);
 
-    // Buttons on the top panel
+  // Buttons on the top panel
    btnMyEvent = new JButton("My Event");
    btnMyEvent.setBounds(400, 0, 150, 100);
    btnMyEvent.setFont(new Font("Serif", Font.ITALIC, 15));
@@ -124,15 +125,16 @@ public class userDashForEvents extends JFrame implements ActionListener {
     add(btnBack);
 
     setVisible(true);
-    }
+   
+ }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnRefreshTable) {
-            transposeDataToFields();
-         boolean eventExists = false;
-            if (!eventExists) {
-    JOptionPane.showMessageDialog(this, "Table Refreshed",  "Reminder", JOptionPane.INFORMATION_MESSAGE);
+@Override
+public void actionPerformed(ActionEvent e) {
+    if (e.getSource() == btnRefreshTable) {
+        transposeDataToFields();
+     boolean eventExists = false;
+        if (!eventExists) {
+         JOptionPane.showMessageDialog(this, "Table Refreshed",  "Reminder", JOptionPane.INFORMATION_MESSAGE);
       }
         } else if (e.getSource() == btnBack) {
              new userDashboard(); // back to dashboard
@@ -172,11 +174,10 @@ private void transposeDataToFields() {
 
      tblModel.addRow(new Object[]{eventID, eventName, name, date, eventDuration, timeOfEvent, status});
 
-    } 
+      } 
             
    } catch (SQLException e) {
     JOptionPane.showMessageDialog(this, "Error fetching data from database: " + e.getMessage(),    "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-}
-}
+     }
+  }

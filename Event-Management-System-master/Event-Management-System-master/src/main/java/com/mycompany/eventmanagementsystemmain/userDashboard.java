@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.eventmanagementsystemmain;
 
 
@@ -10,10 +7,6 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- *
- * @author Nix
- */
 public class userDashboard extends JFrame implements ActionListener{
 
  JLabel lblHeader2;
@@ -22,11 +15,12 @@ public class userDashboard extends JFrame implements ActionListener{
 
     userDashboard (){    
     //component settings
-    setSize(1000, 800);
+     setSize(1000, 800);
     setLocationRelativeTo(null);
+    setTitle("EVENT VENTURE");
+    setResizable(false);         
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(null);
-    setResizable(false);
     getContentPane().setBackground(new Color(244, 187, 255));
 
     lblHeader2 = new JLabel("WELCOME TO EVENT VENTURE");
@@ -119,7 +113,8 @@ public class userDashboard extends JFrame implements ActionListener{
      }
      else if (e.getSource() == btnLogOut) {
        new userLoginAndSignup();
-            dispose();
+       JOptionPane.showMessageDialog(null, "You have logged out on your account.");
+        dispose();
         }
     } 
      
