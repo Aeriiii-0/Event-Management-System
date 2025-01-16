@@ -156,7 +156,8 @@ String[] eventNames = {"Select an option", "Birthday", "Wedding", "Christening"}
     if (e.getSource() == btnRequest) {
         
    // Validating text fields
-   if (tfName.getText().isEmpty() || tfDate.getText().isEmpty() || tfEvent.getText().isEmpty() || cmbDuration.getSelectedItem().equals("Select Option") || cmbEventName.getSelectedItem().equals("Select an option")) {
+   if (tfName.getText().isEmpty() || tfDate.getText().isEmpty() || tfEvent.getText().isEmpty() || 
+    cmbDuration.getSelectedItem().equals("Select Option") || cmbEventName.getSelectedItem().equals("Select an option")) {
     JOptionPane.showMessageDialog(null, "Please fill in all required fields.", "Error", JOptionPane.ERROR_MESSAGE);
     return;
 }
